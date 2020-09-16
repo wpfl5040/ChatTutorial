@@ -5,16 +5,19 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import com.wpfl5.chattutorial.model.Event
-import com.wpfl5.chattutorial.ui.base.BaseActivity
+import com.wpfl5.chattutorial.ui.base.BaseVMActivity
 
-fun BaseActivity<*, *>.setToastObserver(liveData: LiveData<Event<Int>>){
+fun BaseVMActivity<*, *>.setToastObserver(liveData: LiveData<Event<Int>>){
     liveData.eventObserving{ toast(it) }
 }
 
-fun Context.toast(text: String, duration: Int = Toast.LENGTH_SHORT) = Toast.makeText(this, text, duration).show()
+fun Context.toast(text: String?, duration: Int = Toast.LENGTH_SHORT) {
+    if(text.isNullOrBlank()) Toast.makeText(this, "null", duration).show()
+    else Toast.makeText(this, text, duration).show()
+}
 fun Context.toast(@StringRes id: Int, duration: Int = Toast.LENGTH_SHORT) = toast(getString(id), duration)
 
-fun Any.toast(context: Context, content: String, duration: Int = Toast.LENGTH_SHORT) {
+fun Any.toast(context: Context, content: String?, duration: Int = Toast.LENGTH_SHORT) {
     context.toast(content, duration)
 }
 

@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">ChatTutorial</string>
+
+    <integer name="card_flip_time_full">300</integer>
+    <integer name="card_flip_time_half">150</integer>
+
+    <string name="error_id">id를 입력해주세요.</string>
+    <string name="error_pwd">패스워드를 입력해주세요.</string>
+    <string name="login">LOGIN</string>
+    <string name="id">아이디(이메일)</string>
+    <string name="password">비밀번호</string>
+    <string name="signin">S I G N I N</string>
+    <string name="notUser">회원이 아니신가요?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="register">Register</string>
+    <string name="name">이름</string>
+    <string name="kRegister">회원 가입</string>
 </resources>

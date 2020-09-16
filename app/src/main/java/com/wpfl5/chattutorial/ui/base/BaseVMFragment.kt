@@ -13,7 +13,7 @@ import androidx.lifecycle.Observer
 import com.wpfl5.chattutorial.model.Event
 import com.wpfl5.chattutorial.model.EventObserver
 
-abstract class BaseFragment<VDB: ViewDataBinding, VM: BaseViewModel> : Fragment() {
+abstract class BaseVMFragment<VDB: ViewDataBinding, VM: BaseViewModel> : Fragment() {
     lateinit var binding: VDB
 
     @LayoutRes
@@ -31,10 +31,10 @@ abstract class BaseFragment<VDB: ViewDataBinding, VM: BaseViewModel> : Fragment(
     }
 
     fun <T> LiveData<T>.observing(function: (T) -> Unit) {
-        observe(this@BaseFragment, Observer{ function(it) })
+        observe(this@BaseVMFragment, Observer{ function(it) })
     }
 
     fun <T> LiveData<Event<T>>.eventObserving(function: (T) -> Unit) {
-        observe(this@BaseFragment, EventObserver { function(it) })
+        observe(this@BaseVMFragment, EventObserver { function(it) })
     }
 }
