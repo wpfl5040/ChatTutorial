@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "360898490549",
+    "firebase_url": "https://chattutorial-aeedc.firebaseio.com",
+    "project_id": "chattutorial-aeedc",
+    "storage_bucket": "chattutorial-aeedc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:360898490549:android:98fe1ef6dd7af728d1cefc",
+        "android_client_info": {
+          "package_name": "com.wpfl5.chattutorial"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "360898490549-dpqi2n938lhils6jr90ple7c0ma4i9of.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZ4uciGOxdB3wxJ4nGiyfQX-AjyEVf1nM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "360898490549-dpqi2n938lhils6jr90ple7c0ma4i9of.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
