@@ -14,7 +14,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@color/colorPrimary" />
+            android:background="@color/colorPurple" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,7 +31,7 @@
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
                 android:contentDescription="@string/app_name"
-                android:src="@android:drawable/sym_def_app_icon" />
+                android:src="@drawable/ic_chat" />
 
 
                 <FrameLayout

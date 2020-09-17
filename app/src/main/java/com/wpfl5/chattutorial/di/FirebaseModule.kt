@@ -2,6 +2,9 @@ package com.wpfl5.chattutorial.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
@@ -19,6 +22,16 @@ object FirebaseModule {
         return Firebase.auth
     }
 
+    @Singleton
+    @Provides
+    fun provideFirestore() : FirebaseFirestore{
+        return Firebase.firestore
+    }
 
+    @Singleton
+    @Provides
+    fun provideFirebaseId() : FirebaseInstanceId{
+        return FirebaseInstanceId.getInstance()
+    }
 
 }

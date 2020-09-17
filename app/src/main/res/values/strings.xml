@@ -1,11 +1,13 @@
 <resources>
     <string name="app_name">ChatTutorial</string>
 
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <integer name="card_flip_time_full">300</integer>
     <integer name="card_flip_time_half">150</integer>
 
     <string name="error_id">id를 입력해주세요.</string>
     <string name="error_pwd">패스워드를 입력해주세요.</string>
+    <string name="error_blank">값을 입력해주세요.</string>
     <string name="login">LOGIN</string>
     <string name="id">아이디(이메일)</string>
     <string name="password">비밀번호</string>
@@ -15,4 +17,5 @@
     <string name="register">Register</string>
     <string name="name">이름</string>
     <string name="kRegister">회원 가입</string>
+    <string name="error_name">이름을 입력해주세요.</string>
 </resources>

@@ -43,9 +43,7 @@ fun TextInputLayout.errorInit() {
 }
 
 fun Any.initError(vararg input: TextInputLayout){
-    input.forEach {
-        it.errorInit()
-    }
+    input.forEach { it.errorInit() }
 }
 
 fun TextInputLayout.validate(message: String, validator: (String?) -> Boolean) : Boolean{

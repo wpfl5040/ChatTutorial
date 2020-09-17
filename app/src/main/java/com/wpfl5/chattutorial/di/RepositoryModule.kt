@@ -1,7 +1,9 @@
 package com.wpfl5.chattutorial.di
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.wpfl5.chattutorial.repository.AuthRepository
+import com.wpfl5.chattutorial.repository.StoreRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,5 +25,13 @@ object RepositoryModule {
         return AuthRepository(auth)
     }
 
+    @ExperimentalCoroutinesApi
+    @Provides
+    @ActivityRetainedScoped
+    fun provideStoreRepository(
+        store: FirebaseFirestore
+    ) : StoreRepository {
+        return StoreRepository(store)
+    }
 
 }

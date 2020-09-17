@@ -2,21 +2,21 @@ package com.wpfl5.chattutorial.ui.login
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.wpfl5.chattutorial.R
 import com.wpfl5.chattutorial.databinding.LoginCardFrontBinding
 import com.wpfl5.chattutorial.ext.*
+import com.wpfl5.chattutorial.model.AuthUser
 import com.wpfl5.chattutorial.model.FbResponse
-import com.wpfl5.chattutorial.model.User
-import com.wpfl5.chattutorial.ui.MainActivity
 import com.wpfl5.chattutorial.ui.base.BaseVMFragment
+import com.wpfl5.chattutorial.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CardLoginFragment: BaseVMFragment<LoginCardFrontBinding, LoginViewModel>() {
 
     override fun getLayoutRes(): Int = R.layout.login_card_front
-    override val viewModel: LoginViewModel by viewModels()
+    override val viewModel: LoginViewModel by activityViewModels()
 
     override fun onStart() {
         super.onStart()
@@ -45,7 +45,7 @@ class CardLoginFragment: BaseVMFragment<LoginCardFrontBinding, LoginViewModel>()
             .commit()
     }
 
-    fun login(){
+    private fun login(){
         with(binding){
             initError(inputId, inputPassword)
 
@@ -55,11 +55,11 @@ class CardLoginFragment: BaseVMFragment<LoginCardFrontBinding, LoginViewModel>()
             when{
                 id.isNullOrBlank() -> inputId.errorText(R.string.error_id)
                 pwd.isNullOrBlank() -> inputPassword.errorText(R.string.error_pwd)
-                else -> viewModel.login(User(id, pwd))
+                else -> viewModel.login(AuthUser(id, pwd))
             }
         }
-
     }
+
 
     private fun loginObserver(){
         viewModel.loginResponse.observing { result ->

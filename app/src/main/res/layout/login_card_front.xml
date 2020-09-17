@@ -99,7 +99,7 @@
                     android:clickable="true"
                     android:text="@string/sign_up"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorPurple"
                     android:textStyle="bold"
                     android:focusable="true" />
 
