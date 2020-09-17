@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_main"
+    app:startDestination="@id/friendsFragment">
+
+    <fragment
+        android:id="@+id/friendsFragment"
+        android:name="com.wpfl5.chattutorial.ui.main.friend.MainFriendsFragment"
+        android:label="MainFirendsFragment" />
+
+    <fragment
+        android:id="@+id/roomsFragment"
+        android:name="com.wpfl5.chattutorial.ui.main.room.MainRoomsFragment"
+        android:label="MainRoomsFragment" />
+</navigation>

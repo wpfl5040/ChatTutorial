@@ -2,6 +2,8 @@ package com.wpfl5.chattutorial.ui.main
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI
 import com.wpfl5.chattutorial.R
 import com.wpfl5.chattutorial.databinding.ActivityMainBinding
 import com.wpfl5.chattutorial.ui.base.BaseVMActivity
@@ -14,9 +16,15 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        init()
         binding.apply {
             mainViewModel = viewModel
         }
 
+    }
+
+    private fun init(){
+        val navController = Navigation.findNavController(this, R.id.nav_host_fragment_container)
+        NavigationUI.setupWithNavController(binding.bottomNavigationView, navController)
     }
 }
