@@ -4,9 +4,9 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
-import com.wpfl5.chattutorial.model.AuthUser
-import com.wpfl5.chattutorial.model.FbResponse
-import com.wpfl5.chattutorial.model.User
+import com.wpfl5.chattutorial.model.request.AuthUser
+import com.wpfl5.chattutorial.model.request.User
+import com.wpfl5.chattutorial.model.response.FbResponse
 import com.wpfl5.chattutorial.repository.AuthRepository
 import com.wpfl5.chattutorial.repository.StoreRepository
 import com.wpfl5.chattutorial.ui.EventViewModelDelegate
@@ -68,8 +68,12 @@ class LoginViewModel
         _registerAuthLiveData.value = user
     }
 
-    fun registerStore(id: String, pwd: String, name: String){
-        val user = User(id,pwd,name,_fcmToken.value)
+    fun registerStore(id: String, name: String){
+        val user = User(
+            id,
+            name,
+            _fcmToken.value
+        )
         _registerStoreLiveData.value = user
     }
 

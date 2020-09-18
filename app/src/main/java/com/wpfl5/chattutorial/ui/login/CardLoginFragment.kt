@@ -6,8 +6,8 @@ import androidx.fragment.app.activityViewModels
 import com.wpfl5.chattutorial.R
 import com.wpfl5.chattutorial.databinding.LoginCardFrontBinding
 import com.wpfl5.chattutorial.ext.*
-import com.wpfl5.chattutorial.model.AuthUser
-import com.wpfl5.chattutorial.model.FbResponse
+import com.wpfl5.chattutorial.model.request.AuthUser
+import com.wpfl5.chattutorial.model.response.FbResponse
 import com.wpfl5.chattutorial.ui.base.BaseVMFragment
 import com.wpfl5.chattutorial.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint

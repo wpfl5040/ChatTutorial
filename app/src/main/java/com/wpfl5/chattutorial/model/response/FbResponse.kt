@@ -1,4 +1,4 @@
-package com.wpfl5.chattutorial.model
+package com.wpfl5.chattutorial.model.response
 
 sealed class FbResponse<out T> {
     object Loading : FbResponse<Nothing>()

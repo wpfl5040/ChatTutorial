@@ -6,8 +6,8 @@ import androidx.fragment.app.activityViewModels
 import com.wpfl5.chattutorial.R
 import com.wpfl5.chattutorial.databinding.LoginCardBackBinding
 import com.wpfl5.chattutorial.ext.*
-import com.wpfl5.chattutorial.model.AuthUser
-import com.wpfl5.chattutorial.model.FbResponse
+import com.wpfl5.chattutorial.model.request.AuthUser
+import com.wpfl5.chattutorial.model.response.FbResponse
 import com.wpfl5.chattutorial.ui.base.BaseVMFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -44,11 +44,16 @@ class CardRegisterFragment : BaseVMFragment<LoginCardBackBinding, LoginViewModel
 
 
     private fun registerAuthObserver(id: String, pwd: String, name: String){
-        viewModel.registerAuth(AuthUser(id,pwd))
+        viewModel.registerAuth(
+            AuthUser(
+                id,
+                pwd
+            )
+        )
         viewModel.registerAuthResponse.observing { result ->
             when(result){
                 is FbResponse.Loading -> { loading(true) }
-                is FbResponse.Success -> { registerStoreObserver(id, pwd, name) }
+                is FbResponse.Success -> { registerStoreObserver(id, name) }
                 is FbResponse.Fail -> {
                     loading(false)
                     toast(requireContext(), result.e.message)
@@ -57,8 +62,8 @@ class CardRegisterFragment : BaseVMFragment<LoginCardBackBinding, LoginViewModel
         }
     }
 
-    private fun registerStoreObserver(id: String, pwd: String, name: String){
-        viewModel.registerStore(id,pwd,name)
+    private fun registerStoreObserver(id: String, name: String){
+        viewModel.registerStore(id,name)
         viewModel.registerStoreResponse.observing { result->
             when(result){
                 is FbResponse.Loading -> { }

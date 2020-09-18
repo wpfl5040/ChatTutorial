@@ -1,4 +1,4 @@
-package com.wpfl5.chattutorial.model
+package com.wpfl5.chattutorial.model.request
 
 data class AuthUser (
     val id: String,
@@ -7,7 +7,6 @@ data class AuthUser (
 
 data class User(
     val id: String,
-    val password: String,
     val name: String,
     val fcmToken: String?
 )

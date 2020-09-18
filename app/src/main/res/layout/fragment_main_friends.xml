@@ -1,18 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="com.wpfl5.chattutorial.model.response.FbResponse"/>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <variable
+            name="friendViewModel"
+            type="com.wpfl5.chattutorial.ui.main.friend.FriendsViewModel" />
+
+        <variable
+            name="mainViewModel"
+            type="com.wpfl5.chattutorial.ui.main.MainViewModel" />
+
+
+        <variable
+            name="result"
+            type="FbResponse" />
+    </data>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.main.friend.MainFriendsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:text="친구"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:textColor="@android:color/black"
+        android:layout_margin="18dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        app:isRefreshing="@{result instanceof FbResponse.Loading}">
 
-</FrameLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_friend"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:visibleGone="@{result instanceof FbResponse.Success}"
+            tools:listitem="@layout/row_friend"/>
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+
+</LinearLayout>
 
 </layout>

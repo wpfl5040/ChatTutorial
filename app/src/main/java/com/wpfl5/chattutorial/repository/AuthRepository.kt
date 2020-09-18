@@ -1,8 +1,8 @@
 package com.wpfl5.chattutorial.repository
 
 import com.google.firebase.auth.FirebaseAuth
-import com.wpfl5.chattutorial.model.AuthUser
-import com.wpfl5.chattutorial.model.FbResponse
+import com.wpfl5.chattutorial.model.request.AuthUser
+import com.wpfl5.chattutorial.model.response.FbResponse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
