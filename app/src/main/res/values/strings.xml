@@ -22,4 +22,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="friends">Friends</string>
     <string name="rooms">Rooms</string>
+    <string name="readimage">readImage</string>
+    <string name="person">person</string>
+    <string name="checkreadimage">checkReadImage</string>
 </resources>

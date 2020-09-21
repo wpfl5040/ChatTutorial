@@ -6,10 +6,18 @@
     <fragment
         android:id="@+id/friendsFragment"
         android:name="com.wpfl5.chattutorial.ui.main.friend.MainFriendsFragment"
-        android:label="MainFirendsFragment" />
+        android:label="MainFirendsFragment" >
+        <action
+            android:id="@+id/action_friendsFragment_to_chatActivity"
+            app:destination="@id/chatActivity" />
+    </fragment>
 
     <fragment
         android:id="@+id/roomsFragment"
         android:name="com.wpfl5.chattutorial.ui.main.room.MainRoomsFragment"
         android:label="MainRoomsFragment" />
+    <activity
+        android:id="@+id/chatActivity"
+        android:name="com.wpfl5.chattutorial.ui.chat.ChatActivity"
+        android:label="ChatActivity" />
 </navigation>

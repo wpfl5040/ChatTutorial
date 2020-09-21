@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.login.LoginActivity"/>
+        <activity android:name=".ui.chat.ChatActivity"/>
+        <activity android:name=".ui.login.LoginActivity" />
         <activity android:name=".ui.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,9 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.main.MainActivity"/>
-
-        <!-- - 안드로이드 8.0 이상 푸시 처리 추가 코드 -->
+        <activity android:name=".ui.main.MainActivity" /> <!-- - 안드로이드 8.0 이상 푸시 처리 추가 코드 -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_chat" />
