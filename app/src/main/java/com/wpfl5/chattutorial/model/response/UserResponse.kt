@@ -8,6 +8,6 @@ data class UserResponse (
     val id: String,
     val name: String,
     val fcmToken: String?
-) {
+) : java.io.Serializable {
     constructor() : this("", "","","")
 }

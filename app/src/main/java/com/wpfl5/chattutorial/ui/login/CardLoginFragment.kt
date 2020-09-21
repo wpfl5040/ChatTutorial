@@ -17,6 +17,7 @@ class CardLoginFragment: BaseVMFragment<LoginCardFrontBinding, LoginViewModel>()
 
     override fun getLayoutRes(): Int = R.layout.login_card_front
     override val viewModel: LoginViewModel by activityViewModels()
+    private lateinit var userId: String
 
     override fun onStart() {
         super.onStart()
@@ -55,7 +56,10 @@ class CardLoginFragment: BaseVMFragment<LoginCardFrontBinding, LoginViewModel>()
             when{
                 id.isNullOrBlank() -> inputId.errorText(R.string.error_id)
                 pwd.isNullOrBlank() -> inputPassword.errorText(R.string.error_pwd)
-                else -> viewModel.login(AuthUser(id, pwd))
+                else -> {
+                    userId = id
+                    viewModel.login(AuthUser(id, pwd))
+                }
             }
         }
     }
@@ -66,6 +70,7 @@ class CardLoginFragment: BaseVMFragment<LoginCardFrontBinding, LoginViewModel>()
             when(result){
                 is FbResponse.Loading -> { }
                 is FbResponse.Success -> {
+                    requireContext().putSpValue("userId", userId)
                     requireActivity().finish()
                     startAct<MainActivity>()
                 }

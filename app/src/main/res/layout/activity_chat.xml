@@ -1,12 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="chatViewModel"
+            type="com.wpfl5.chattutorial.ui.chat.ChatViewModel" />
+        <variable
+            name="user"
+            type="com.wpfl5.chattutorial.model.response.UserResponse" />
+    </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.chat.ChatActivity">
+        tools:context=".ui.main.chat.MainChatFragment">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#0192CC"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:contentInsetStartWithNavigation="0dp"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            tools:subtitle="Traveling today. BBM me."
+            app:subtitle="@{user.id}"
+            app:subtitleTextAppearance="@style/TextAppearance.AppCompat.Small"
+            app:subtitleTextColor="#cccccc"
+            app:title="@{user.name}"
+            tools:title="Jeff"
+            app:titleTextAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:titleTextColor="@android:color/white"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_chat"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/input_text"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+        <EditText
+            android:id="@+id/input_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:hint="@string/write_a_message"
+            android:imeOptions="actionSearch"
+            android:padding="10dp"
+            android:inputType="text"
+            android:importantForAutofill="no"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_send"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageButton
+            android:id="@+id/btn_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FAFAFA"
+            android:src="@drawable/ic_baseline_send_24"
+            android:contentDescription="@string/sendbutton"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

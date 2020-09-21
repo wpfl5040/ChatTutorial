@@ -9,14 +9,14 @@ import com.wpfl5.chattutorial.ui.base.BaseAdapter
 class FriendAdapter(
     val onItemClickListener: (UserResponse) -> Unit
 ) : BaseAdapter<UserResponse, RowFriendBinding>(
-    object : DiffUtil.ItemCallback<UserResponse>() {
-        override fun areItemsTheSame(oldItem: UserResponse, newItem: UserResponse): Boolean {
-            return oldItem.id == newItem.id
-        }
-        override fun areContentsTheSame(oldItem: UserResponse, newItem: UserResponse): Boolean {
-            return oldItem == newItem
-        }
+object : DiffUtil.ItemCallback<UserResponse>() {
+    override fun areItemsTheSame(oldItem: UserResponse, newItem: UserResponse): Boolean {
+        return oldItem.id == newItem.id
     }
+    override fun areContentsTheSame(oldItem: UserResponse, newItem: UserResponse): Boolean {
+        return oldItem == newItem
+    }
+}
 ) {
     override val layoutRes: Int = R.layout.row_friend
     override fun onBindViewHolder(binding: RowFriendBinding, item: UserResponse) {

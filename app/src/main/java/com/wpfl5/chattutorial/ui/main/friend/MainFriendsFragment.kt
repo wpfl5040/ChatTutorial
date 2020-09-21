@@ -23,7 +23,7 @@ class MainFriendsFragment : BaseVMFragment<FragmentMainFriendsBinding, FriendsVi
     private val adapter = FriendAdapter {
         findNavController().navigate(
             MainFriendsFragmentDirections
-                .actionFriendsFragmentToChatActivity()
+                .actionFriendsFragmentToChatActivity(it)
         )
     }
 
