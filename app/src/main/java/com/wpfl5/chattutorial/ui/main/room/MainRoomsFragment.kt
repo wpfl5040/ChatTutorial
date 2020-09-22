@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.wpfl5.chattutorial.R
 import com.wpfl5.chattutorial.databinding.FragmentMainRoomsBinding
 import com.wpfl5.chattutorial.ext.getSpValue
@@ -24,7 +25,11 @@ class MainRoomsFragment : BaseVMFragment<FragmentMainRoomsBinding, RoomsViewMode
     private val mainVM: MainViewModel by activityViewModels()
 
     private val adapter = RoomAdapter{
-
+        findNavController()
+            .navigate(
+                MainRoomsFragmentDirections
+                    .actionRoomsFragmentToChatActivity(it)
+            )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

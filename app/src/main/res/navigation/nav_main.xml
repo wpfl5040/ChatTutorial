@@ -9,24 +9,24 @@
         android:id="@+id/friendsFragment"
         android:name="com.wpfl5.chattutorial.ui.main.friend.MainFriendsFragment"
         android:label="MainFirendsFragment"
-        tools:layout="@layout/fragment_main_friends">
-        <action
-            android:id="@+id/action_friendsFragment_to_chatActivity"
-            app:destination="@id/chatActivity" />
-    </fragment>
+        tools:layout="@layout/fragment_main_friends"/>
 
     <fragment
         android:id="@+id/roomsFragment"
         android:name="com.wpfl5.chattutorial.ui.main.room.MainRoomsFragment"
         android:label="MainRoomsFragment"
-        tools:layout="@layout/fragment_main_rooms"/>
+        tools:layout="@layout/fragment_main_rooms">
+        <action
+            android:id="@+id/action_roomsFragment_to_chatActivity"
+            app:destination="@id/chatActivity" />
+    </fragment>
     <activity
         android:id="@+id/chatActivity"
         android:name="com.wpfl5.chattutorial.ui.chat.ChatActivity"
         android:label="ChatActivity"
         tools:layout="@layout/activity_chat">
         <argument
-            android:name="user"
-            app:argType="com.wpfl5.chattutorial.model.response.UserResponse" />
+            android:name="room"
+            app:argType="com.wpfl5.chattutorial.model.response.RoomResponse" />
     </activity>
 </navigation>

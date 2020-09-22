@@ -60,7 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:timestampToString="@{room.modifiedAt}"
-        tools:text="오후 9: 24"
+        tools:text="09/22 09:24 PM"
         android:layout_margin="10dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

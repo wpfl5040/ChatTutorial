@@ -5,7 +5,7 @@ import com.wpfl5.chattutorial.R
 import com.wpfl5.chattutorial.databinding.ActivitySplashBinding
 import com.wpfl5.chattutorial.ext.startAct
 import com.wpfl5.chattutorial.ui.base.BaseActivity
-import com.wpfl5.chattutorial.ui.main.MainActivity
+import com.wpfl5.chattutorial.ui.login.LoginActivity
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -20,7 +20,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         MainScope().launch {
             delay(1000L)
             finish()
-            startAct<MainActivity>()
+            startAct<LoginActivity>()
         }
 
     }

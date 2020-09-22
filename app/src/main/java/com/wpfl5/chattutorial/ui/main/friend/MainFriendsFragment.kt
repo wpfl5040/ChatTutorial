@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.wpfl5.chattutorial.R
 import com.wpfl5.chattutorial.databinding.FragmentMainFriendsBinding
 import com.wpfl5.chattutorial.ext.toast
@@ -21,10 +20,7 @@ class MainFriendsFragment : BaseVMFragment<FragmentMainFriendsBinding, FriendsVi
     private val mainVM: MainViewModel by activityViewModels()
 
     private val adapter = FriendAdapter {
-        findNavController().navigate(
-            MainFriendsFragmentDirections
-                .actionFriendsFragmentToChatActivity(it)
-        )
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

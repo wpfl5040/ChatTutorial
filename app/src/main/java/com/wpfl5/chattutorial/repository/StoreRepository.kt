@@ -4,6 +4,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObjects
 import com.wpfl5.chattutorial.model.request.User
 import com.wpfl5.chattutorial.model.response.FbResponse
+import com.wpfl5.chattutorial.model.response.MsgResponse
 import com.wpfl5.chattutorial.model.response.RoomResponse
 import com.wpfl5.chattutorial.model.response.UserResponse
 import kotlinx.coroutines.cancel
@@ -53,7 +54,22 @@ class StoreRepository @Inject constructor(
             }
 
         awaitClose { this.cancel("StoreRepository-getRoomList() : cancel") }
+    }
 
+    suspend fun getMsgList(rId: String): Flow<FbResponse<List<MsgResponse>?>> = callbackFlow {
+        db.collection("rooms")
+            .document(rId)
+            .collection("messages")
+            .orderBy("sentAt")
+            .get()
+            .addOnSuccessListener {
+                offer(FbResponse.Success(it.toObjects()))
+            }
+            .addOnFailureListener {
+                offer(FbResponse.Fail(it))
+            }
+
+        awaitClose { this.cancel("StoreRepository-getMsgList() : cancel") }
     }
 
 

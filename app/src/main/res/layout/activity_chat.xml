@@ -8,8 +8,9 @@
             name="chatViewModel"
             type="com.wpfl5.chattutorial.ui.chat.ChatViewModel" />
         <variable
-            name="user"
-            type="com.wpfl5.chattutorial.model.response.UserResponse" />
+            name="room"
+            type="com.wpfl5.chattutorial.model.response.RoomResponse" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,10 +27,10 @@
             app:contentInsetStartWithNavigation="0dp"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             tools:subtitle="Traveling today. BBM me."
-            app:subtitle="@{user.id}"
+            app:subtitle="@{room.name}"
             app:subtitleTextAppearance="@style/TextAppearance.AppCompat.Small"
             app:subtitleTextColor="#cccccc"
-            app:title="@{user.name}"
+            app:title="@{room.users.toString()}"
             tools:title="Jeff"
             app:titleTextAppearance="@style/TextAppearance.AppCompat.Medium"
             app:titleTextColor="@android:color/white"

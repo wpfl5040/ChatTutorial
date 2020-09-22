@@ -6,6 +6,9 @@ import androidx.navigation.navArgs
 import com.wpfl5.chattutorial.R
 import com.wpfl5.chattutorial.databinding.ActivityChatBinding
 import com.wpfl5.chattutorial.ext.afterTextChanged
+import com.wpfl5.chattutorial.ext.toast
+import com.wpfl5.chattutorial.model.response.FbResponse
+import com.wpfl5.chattutorial.ui.adapter.ChatAdapter
 import com.wpfl5.chattutorial.ui.base.BaseVMActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -15,17 +18,29 @@ class ChatActivity : BaseVMActivity<ActivityChatBinding, ChatViewModel>() {
     override val viewModel: ChatViewModel by viewModels()
     private val args : ChatActivityArgs by navArgs()
 
+    private lateinit var adapter : ChatAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        adapter = ChatAdapter(applicationContext)
         binding.apply {
-            chatViewModel = viewModel
-            user = args.user
+            chatViewModel = viewModel.apply { setChatDataRequest(args.room.rid) }
+            room = args.room
+            recyclerChat.adapter = adapter
 
+            btnSend.setOnClickListener {
+                val msg = inputText.text.toString()
+                inputText.text.clear()
+            }
 
         }
 
-        textWatcher()
+    }
 
+    override fun onStart() {
+        super.onStart()
+        loadChatData()
+        textWatcher()
     }
 
 
@@ -35,6 +50,22 @@ class ChatActivity : BaseVMActivity<ActivityChatBinding, ChatViewModel>() {
             btnSend.isEnabled = false
             inputText.afterTextChanged {
                 btnSend.isEnabled = !it.isBlank()
+            }
+        }
+    }
+
+    private fun loadChatData(){
+        viewModel.chatResponse.observing {result ->
+            when(result){
+                is FbResponse.Loading -> { }
+                is FbResponse.Success -> {
+                    if(!result.data.isNullOrEmpty()) {
+                        adapter.submitList(result.data)
+                    }
+                }
+                is FbResponse.Fail -> {
+                    toast(result.e.message)
+                }
             }
         }
     }
