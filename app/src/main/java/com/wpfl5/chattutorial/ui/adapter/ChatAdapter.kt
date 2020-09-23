@@ -61,7 +61,7 @@ class ChatAdapter constructor(val context: Context) : ListAdapter<MsgResponse, R
     override fun getItemViewType(position: Int): Int {
         val item = getItem(position)
         val myId = context.getSpValue("userId", "")
-        return if(item.sentById == myId) R.layout.row_chat_me
+        return if(item.sentBy == myId) R.layout.row_chat_me
                 else R.layout.row_chat_friend
     }
 

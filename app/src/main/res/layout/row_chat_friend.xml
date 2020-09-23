@@ -37,6 +37,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="3dp"
             android:paddingRight="3dp"
+            app:timestampToTime="@{msg.sentAt}"
             tools:text="02:30"
             android:textColor="#cccccc"
             android:textSize="12sp" />

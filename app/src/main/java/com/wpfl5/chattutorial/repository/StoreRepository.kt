@@ -2,6 +2,7 @@ package com.wpfl5.chattutorial.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObjects
+import com.wpfl5.chattutorial.model.request.MsgRequest
 import com.wpfl5.chattutorial.model.request.User
 import com.wpfl5.chattutorial.model.response.FbResponse
 import com.wpfl5.chattutorial.model.response.MsgResponse
@@ -70,6 +71,24 @@ class StoreRepository @Inject constructor(
             }
 
         awaitClose { this.cancel("StoreRepository-getMsgList() : cancel") }
+    }
+
+    suspend fun sendMsg(rId: String, msgRequest: MsgRequest) : Flow<FbResponse<Boolean>> = callbackFlow {
+        db.collection("rooms")
+            .document(rId)
+            .collection("messages")
+            .document()
+            .set(msgRequest)
+            .addOnSuccessListener {
+                offer(FbResponse.Success(true))
+            }
+            .addOnFailureListener {
+                offer(FbResponse.Fail(it))
+            }
+
+        awaitClose { this.cancel("StoreRepository-sendMsg() : cancel") }
+
+
     }
 
 

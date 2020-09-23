@@ -30,7 +30,7 @@
             app:subtitle="@{room.name}"
             app:subtitleTextAppearance="@style/TextAppearance.AppCompat.Small"
             app:subtitleTextColor="#cccccc"
-            app:title="@{room.users.toString()}"
+            app:roomText="@{room.users}"
             tools:title="Jeff"
             app:titleTextAppearance="@style/TextAppearance.AppCompat.Medium"
             app:titleTextColor="@android:color/white"
