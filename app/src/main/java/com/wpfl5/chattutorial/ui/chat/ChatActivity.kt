@@ -31,6 +31,8 @@ class ChatActivity : BaseVMActivity<ActivityChatBinding, ChatViewModel>() {
             room = args.room
             recyclerChat.adapter = adapter
 
+            inputText.setOnClickListener { scrollToBottom() }
+
             btnSend.setOnClickListener {
                 val msg = inputText.getString()
                 val sentId = getSpValue("userId","")
@@ -46,9 +48,10 @@ class ChatActivity : BaseVMActivity<ActivityChatBinding, ChatViewModel>() {
 
     override fun onStart() {
         super.onStart()
-        loadChatData()
+        //loadChatData()
         textWatcher()
         sendMsgObserver()
+        chatSnapshotObserver()
     }
 
 
@@ -62,21 +65,21 @@ class ChatActivity : BaseVMActivity<ActivityChatBinding, ChatViewModel>() {
         }
     }
 
-    private fun loadChatData(){
-        viewModel.chatResponse.observing {result ->
-            when(result){
-                is FbResponse.Loading -> { }
-                is FbResponse.Success -> {
-                    if(!result.data.isNullOrEmpty()) {
-                        adapter.submitList(result.data)
-                    }
-                }
-                is FbResponse.Fail -> {
-                    toast(result.e.message)
-                }
-            }
-        }
-    }
+//    private fun loadChatData(){
+//        viewModel.chatResponse.observing {result ->
+//            when(result){
+//                is FbResponse.Loading -> { }
+//                is FbResponse.Success -> {
+//                    if(!result.data.isNullOrEmpty()) {
+//                        adapter.submitList(result.data)
+//                    }
+//                }
+//                is FbResponse.Fail -> {
+//                    toast(result.e.message)
+//                }
+//            }
+//        }
+//    }
 
     private fun sendMsgObserver(){
         viewModel.sendChatDataResponse.observing{result ->
@@ -99,7 +102,21 @@ class ChatActivity : BaseVMActivity<ActivityChatBinding, ChatViewModel>() {
         binding.recyclerChat.layoutManager?.scrollToPosition(adapter.itemCount-1)
     }
 
-
+    private fun chatSnapshotObserver(){
+        viewModel.chatSnapshot.observing {result->
+            when(result){
+                is FbResponse.Loading -> { }
+                is FbResponse.Success -> {
+                    if(!result.data.isNullOrEmpty()) {
+                        adapter.submitList(result.data)
+                    }
+                }
+                is FbResponse.Fail -> {
+                    toast(result.e.message)
+                }
+            }
+        }
+    }
 
 
 }

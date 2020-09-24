@@ -17,6 +17,8 @@ class ChatViewModel @ViewModelInject constructor(
     val repository: StoreRepository
 ) : BaseViewModel() {
 
+    val chatSnapshot : LiveData<FbResponse<List<MsgResponse>?>>
+
     private val _roomData = MutableLiveData<RoomResponse>()
 
     private val _sendChatData = MutableLiveData<MsgRequest>()
@@ -31,21 +33,20 @@ class ChatViewModel @ViewModelInject constructor(
         }
     }
 
-    val chatResponse: LiveData<FbResponse<List<MsgResponse>?>>
-
     init {
-        chatResponse = _roomData.switchMap {
-            liveData(coroutineIoContext) {
-                emit(FbResponse.Loading)
-                try {
-                    repository.getMsgList(it.rid).collect {
-                        emit(it)
-                    }
-                } catch (e: Exception) {
-                    emit(FbResponse.Fail(e))
+        chatSnapshot = liveData(coroutineIoContext) {
+            emit(FbResponse.Loading)
+            try {
+                repository.chatSnapshot(_roomData.value!!.rid).collect {
+                    var result : FbResponse<List<MsgResponse>?> = it
+                    emit(it)
                 }
+
+            } catch (e: Exception) {
+                emit(FbResponse.Fail(e))
             }
         }
+
     }
 
 

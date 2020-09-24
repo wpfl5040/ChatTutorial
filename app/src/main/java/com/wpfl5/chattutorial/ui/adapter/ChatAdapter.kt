@@ -15,10 +15,12 @@ import com.wpfl5.chattutorial.databinding.RowChatMeBinding
 import com.wpfl5.chattutorial.ext.getSpValue
 import com.wpfl5.chattutorial.model.response.MsgResponse
 
-class ChatAdapter constructor(val context: Context) : ListAdapter<MsgResponse, RecyclerView.ViewHolder>(diffCallback) {
-    companion object{
+class ChatAdapter constructor(
+    val context: Context
+) : ListAdapter<MsgResponse, RecyclerView.ViewHolder>(DiffObj) {
 
-        object diffCallback: DiffUtil.ItemCallback<MsgResponse>(){
+
+    companion object DiffObj: DiffUtil.ItemCallback<MsgResponse>(){
             override fun areContentsTheSame(oldItem: MsgResponse, newItem: MsgResponse): Boolean {
                 return oldItem.mId == newItem.mId
             }
@@ -27,7 +29,7 @@ class ChatAdapter constructor(val context: Context) : ListAdapter<MsgResponse, R
                 return oldItem == newItem
             }
         }
-    }
+
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val msg = getItem(position)

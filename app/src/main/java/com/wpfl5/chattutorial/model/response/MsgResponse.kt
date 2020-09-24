@@ -13,8 +13,8 @@ data class MsgResponse(
     val msg: String,
     val receiveBy: String,
     val sentBy: String,
-    val sentById: String,
     @ServerTimestamp val sentAt: Timestamp?
 ) : Parcelable {
-    constructor() : this("","","","","",null)
+    constructor() : this("","","","",null)
+    constructor(msg: String, receiveBy: String, sentBy: String, sentAt: Timestamp?) : this("",msg,receiveBy,sentBy,sentAt)
 }
