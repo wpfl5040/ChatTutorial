@@ -5,8 +5,10 @@ import com.wpfl5.chattutorial.R
 import com.wpfl5.chattutorial.databinding.RowRoomBinding
 import com.wpfl5.chattutorial.model.response.RoomResponse
 import com.wpfl5.chattutorial.ui.base.BaseAdapter
+import javax.inject.Singleton
 
-class RoomAdapter(
+@Singleton
+class RoomAdapter constructor(
     val onItemClickListener: (RoomResponse) -> Unit
 ) : BaseAdapter<RoomResponse, RowRoomBinding>(
     object : DiffUtil.ItemCallback<RoomResponse>() {

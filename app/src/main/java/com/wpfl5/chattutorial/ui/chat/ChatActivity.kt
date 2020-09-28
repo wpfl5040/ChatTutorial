@@ -1,6 +1,7 @@
 package com.wpfl5.chattutorial.ui.chat
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.navigation.navArgs
 import com.wpfl5.chattutorial.R
@@ -14,6 +15,8 @@ import com.wpfl5.chattutorial.model.response.FbResponse
 import com.wpfl5.chattutorial.ui.adapter.ChatAdapter
 import com.wpfl5.chattutorial.ui.base.BaseVMActivity
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class ChatActivity : BaseVMActivity<ActivityChatBinding, ChatViewModel>() {
@@ -21,17 +24,17 @@ class ChatActivity : BaseVMActivity<ActivityChatBinding, ChatViewModel>() {
     override val viewModel: ChatViewModel by viewModels()
     private val args : ChatActivityArgs by navArgs()
 
-    private lateinit var adapter : ChatAdapter
+    @Inject
+    lateinit var adapter : ChatAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = ChatAdapter(applicationContext)
+        //adapter = ChatAdapter(applicationContext)
         binding.apply {
             chatViewModel = viewModel.apply { setRoomData(args.room) }
             room = args.room
             recyclerChat.adapter = adapter
 
-            inputText.setOnClickListener { scrollToBottom() }
 
             btnSend.setOnClickListener {
                 val msg = inputText.getString()
@@ -48,12 +51,24 @@ class ChatActivity : BaseVMActivity<ActivityChatBinding, ChatViewModel>() {
 
     override fun onStart() {
         super.onStart()
-        //loadChatData()
+        initToolbar()
         textWatcher()
         sendMsgObserver()
         chatSnapshotObserver()
+        scrollToBottom()
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            android.R.id.home -> finish()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun initToolbar(){
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
 
 
     private fun textWatcher(){
@@ -65,31 +80,14 @@ class ChatActivity : BaseVMActivity<ActivityChatBinding, ChatViewModel>() {
         }
     }
 
-//    private fun loadChatData(){
-//        viewModel.chatResponse.observing {result ->
-//            when(result){
-//                is FbResponse.Loading -> { }
-//                is FbResponse.Success -> {
-//                    if(!result.data.isNullOrEmpty()) {
-//                        adapter.submitList(result.data)
-//                    }
-//                }
-//                is FbResponse.Fail -> {
-//                    toast(result.e.message)
-//                }
-//            }
-//        }
-//    }
-
     private fun sendMsgObserver(){
         viewModel.sendChatDataResponse.observing{result ->
             when(result){
                 is FbResponse.Loading -> {
-                    val newList = mutableListOf<MsgRequest>()
-                    scrollToBottom()
+
                 }
                 is FbResponse.Success -> {
-                    toast("success Sent")
+                    //toast("success Sent")
                 }
                 is FbResponse.Fail -> {
                     toast(result.e.message)
@@ -99,7 +97,7 @@ class ChatActivity : BaseVMActivity<ActivityChatBinding, ChatViewModel>() {
     }
 
     private fun scrollToBottom(){
-        binding.recyclerChat.layoutManager?.scrollToPosition(adapter.itemCount-1)
+        binding.recyclerChat.smoothScrollToPosition(adapter.itemCount)
     }
 
     private fun chatSnapshotObserver(){
@@ -109,6 +107,7 @@ class ChatActivity : BaseVMActivity<ActivityChatBinding, ChatViewModel>() {
                 is FbResponse.Success -> {
                     if(!result.data.isNullOrEmpty()) {
                         adapter.submitList(result.data)
+                        scrollToBottom()
                     }
                 }
                 is FbResponse.Fail -> {

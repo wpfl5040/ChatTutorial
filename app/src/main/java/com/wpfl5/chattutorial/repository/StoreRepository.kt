@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
 class StoreRepository @Inject constructor(
-    private val db: FirebaseFirestore
+    db: FirebaseFirestore
 ) {
 
     private val usersCollection = db.collection("users")
@@ -106,7 +106,6 @@ class StoreRepository @Inject constructor(
                 return@addSnapshotListener
             }else{
                 val responseData = snapshots!!.toObjects<MsgResponse>()
-                Log.d("//sortedResponse", responseData.sortedBy { it.sentAt }.toString())
                 offer(FbResponse.Success(responseData.sortedBy { it.sentAt }))
 //                val responseData = mutableListOf<MsgResponse>()
 //                Log.d("//testt", test.toString())
@@ -135,5 +134,10 @@ class StoreRepository @Inject constructor(
         awaitClose { snap.remove() }
     }
 
+
+    suspend fun updateRoom(rId: String): Flow<FbResponse<Boolean>> = callbackFlow {
+        roomCollection.document(rId)
+
+    }
 
 }

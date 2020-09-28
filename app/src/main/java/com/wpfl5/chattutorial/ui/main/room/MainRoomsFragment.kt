@@ -24,12 +24,9 @@ class MainRoomsFragment : BaseVMFragment<FragmentMainRoomsBinding, RoomsViewMode
     override val viewModel: RoomsViewModel by viewModels()
     private val mainVM: MainViewModel by activityViewModels()
 
-    private val adapter = RoomAdapter{
+    private var adapter: RoomAdapter = RoomAdapter {
         findNavController()
-            .navigate(
-                MainRoomsFragmentDirections
-                    .actionRoomsFragmentToChatActivity(it)
-            )
+            .navigate(MainRoomsFragmentDirections.actionRoomsFragmentToChatActivity(it))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -14,11 +14,14 @@ import com.wpfl5.chattutorial.databinding.RowChatFriendBinding
 import com.wpfl5.chattutorial.databinding.RowChatMeBinding
 import com.wpfl5.chattutorial.ext.getSpValue
 import com.wpfl5.chattutorial.model.response.MsgResponse
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ChatAdapter constructor(
-    val context: Context
+@Singleton
+class ChatAdapter @Inject constructor(
+    @ApplicationContext val context: Context
 ) : ListAdapter<MsgResponse, RecyclerView.ViewHolder>(DiffObj) {
-
 
     companion object DiffObj: DiffUtil.ItemCallback<MsgResponse>(){
             override fun areContentsTheSame(oldItem: MsgResponse, newItem: MsgResponse): Boolean {
