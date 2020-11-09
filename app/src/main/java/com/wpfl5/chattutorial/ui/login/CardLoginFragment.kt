@@ -66,7 +66,7 @@ class CardLoginFragment: BaseVMFragment<LoginCardFrontBinding, LoginViewModel>()
 
 
     private fun loginObserver(){
-        viewModel.loginResponse.observing { result ->
+        viewModel.loginResponse.observing(viewLifecycleOwner) { result ->
             when(result){
                 is FbResponse.Loading -> { }
                 is FbResponse.Success -> {

@@ -81,7 +81,7 @@ class ChatActivity : BaseVMActivity<ActivityChatBinding, ChatViewModel>() {
     }
 
     private fun sendMsgObserver(){
-        viewModel.sendChatDataResponse.observing{result ->
+        viewModel.sendChatDataResponse.observing(this) {result ->
             when(result){
                 is FbResponse.Loading -> {
 
@@ -101,7 +101,7 @@ class ChatActivity : BaseVMActivity<ActivityChatBinding, ChatViewModel>() {
     }
 
     private fun chatSnapshotObserver(){
-        viewModel.chatSnapshot.observing {result->
+        viewModel.chatSnapshot.observing(this) {result->
             when(result){
                 is FbResponse.Loading -> { }
                 is FbResponse.Success -> {

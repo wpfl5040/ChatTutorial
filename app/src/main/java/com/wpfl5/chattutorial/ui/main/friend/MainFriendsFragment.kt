@@ -1,17 +1,21 @@
 package com.wpfl5.chattutorial.ui.main.friend
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import com.google.firebase.storage.FirebaseStorage
 import com.wpfl5.chattutorial.R
 import com.wpfl5.chattutorial.databinding.FragmentMainFriendsBinding
+import com.wpfl5.chattutorial.ext.getSpValue
 import com.wpfl5.chattutorial.ext.toast
 import com.wpfl5.chattutorial.model.response.FbResponse
 import com.wpfl5.chattutorial.ui.adapter.FriendAdapter
 import com.wpfl5.chattutorial.ui.base.BaseVMFragment
 import com.wpfl5.chattutorial.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainFriendsFragment : BaseVMFragment<FragmentMainFriendsBinding, FriendsViewModel>(){
@@ -23,6 +27,8 @@ class MainFriendsFragment : BaseVMFragment<FragmentMainFriendsBinding, FriendsVi
 
     }
 
+    @Inject lateinit var storage: FirebaseStorage
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
@@ -33,19 +39,27 @@ class MainFriendsFragment : BaseVMFragment<FragmentMainFriendsBinding, FriendsVi
         }
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         loadUserList()
     }
 
     private fun loadUserList(){
-        mainVM.userDataResponse.observing { result ->
+        mainVM.userDataResponse.observing(viewLifecycleOwner) { result ->
             binding.result = result
             when(result){
                 is FbResponse.Loading -> { }
                 is FbResponse.Success -> {
                     if(!result.data.isNullOrEmpty()) {
-                        adapter.submitList(result.data)
+                        val data = result.data.toMutableList()
+                        data.forEach {
+                            it.profile = storage.reference.child("profileImage/${it.profileImage}")
+                            Log.d("//profile",it.profile.toString())
+                        }
+                        data.removeIf {
+                            it.id == requireContext().getSpValue("userId", "")
+                        }
+                        adapter.submitList(data)
                     }
                 }
                 is FbResponse.Fail -> {
@@ -54,4 +68,5 @@ class MainFriendsFragment : BaseVMFragment<FragmentMainFriendsBinding, FriendsVi
             }
         }
     }
+
 }

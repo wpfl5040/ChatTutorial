@@ -2,7 +2,9 @@ package com.wpfl5.chattutorial.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.wpfl5.chattutorial.repository.AuthRepository
+import com.wpfl5.chattutorial.repository.StorageRepository
 import com.wpfl5.chattutorial.repository.StoreRepository
 import dagger.Module
 import dagger.Provides
@@ -32,6 +34,15 @@ object RepositoryModule {
         store: FirebaseFirestore
     ) : StoreRepository {
         return StoreRepository(store)
+    }
+
+    @ExperimentalCoroutinesApi
+    @Provides
+    @ActivityRetainedScoped
+    fun provideStorageRepositor(
+        storage: FirebaseStorage
+    ) : StorageRepository {
+        return StorageRepository(storage)
     }
 
 }

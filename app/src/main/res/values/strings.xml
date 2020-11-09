@@ -29,4 +29,6 @@
     <string name="write_a_message">Write a message</string>
     <string name="chat_room">채팅 방</string>
     <string name="exist_room">채팅방이 존재하지 않습니다.</string>
+    <string name="friend">친구</string>
+    <string name="me">나</string>
 </resources>

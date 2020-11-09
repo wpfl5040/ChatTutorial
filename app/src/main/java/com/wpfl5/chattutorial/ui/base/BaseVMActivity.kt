@@ -5,6 +5,7 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.wpfl5.chattutorial.model.Event
@@ -26,8 +27,8 @@ abstract class BaseVMActivity<VDB: ViewDataBinding, VM: BaseViewModel>
     }
 
 
-    fun <T> LiveData<T>.observing(function: (T) -> Unit) {
-        observe(this@BaseVMActivity, Observer{ function(it) })
+    fun <T> LiveData<T>.observing(owner: LifecycleOwner = this@BaseVMActivity, function: (T) -> Unit) {
+        observe(owner, Observer{ function(it) })
     }
 
     fun <T> LiveData<Event<T>>.eventObserving(function: (T) -> Unit) {

@@ -1,7 +1,9 @@
 package com.wpfl5.chattutorial.repository
 
 import android.util.Log
+import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects
 import com.wpfl5.chattutorial.model.request.MsgRequest
 import com.wpfl5.chattutorial.model.request.User
@@ -38,7 +40,7 @@ class StoreRepository @Inject constructor(
         usersCollection
             .get()
             .addOnSuccessListener {
-                offer(FbResponse.Success(it.toObjects()))
+                offer(FbResponse.Success(it.toObjects<UserResponse>()))
             }
             .addOnFailureListener {
                 offer(FbResponse.Fail(it))
@@ -47,35 +49,52 @@ class StoreRepository @Inject constructor(
         awaitClose { this.cancel("StoreRepository-getUserList() : cancel") }
     }
 
-    suspend fun getRoomList(id: String): Flow<FbResponse<List<RoomResponse>?>> = callbackFlow {
-        roomCollection
-            .whereArrayContains("users", id)
-            .get()
-            .addOnSuccessListener {
-                offer(FbResponse.Success(it.toObjects()))
-            }
-            .addOnFailureListener {
-                offer(FbResponse.Fail(it))
+
+    suspend fun getRoomList(id: String) : Flow<FbResponse<List<RoomResponse>?>> = callbackFlow {
+        val ref = roomCollection.whereArrayContains("users", id)
+
+        val registration = ref.addSnapshotListener { snapshots, e ->
+                if (e != null) {
+                    Log.w("//StoreRepository", "listen:error", e)
+                    offer(FbResponse.Fail(e))
+                    return@addSnapshotListener
+                }
+
+                val roomList = mutableListOf<RoomResponse>()
+
+                for (dc in snapshots!!.documentChanges) {
+                    when (dc.type) {
+                        DocumentChange.Type.ADDED -> {
+                            val data = dc.document.toObject<RoomResponse>()
+                            roomList.add(data)
+                            Log.d("//StoreRepository", "New city: ${dc.document.data}")
+                        }
+                        DocumentChange.Type.MODIFIED -> Log.d("//StoreRepository", "Modified city: ${dc.document.data}")
+                        DocumentChange.Type.REMOVED -> Log.d("//StoreRepository", "Removed city: ${dc.document.data}")
+                    }
+                }
+                offer(FbResponse.Success(roomList))
+
             }
 
-        awaitClose { this.cancel("StoreRepository-getRoomList() : cancel") }
+        awaitClose { registration.remove() }
     }
 
-    suspend fun getMsgList(rId: String): Flow<FbResponse<List<MsgResponse>?>> = callbackFlow {
-        roomCollection
-            .document(rId)
-            .collection("messages")
-            .orderBy("sentAt")
-            .get()
-            .addOnSuccessListener {
-                offer(FbResponse.Success(it.toObjects()))
-            }
-            .addOnFailureListener {
-                offer(FbResponse.Fail(it))
-            }
-
-        awaitClose { this.cancel("StoreRepository-getMsgList() : cancel") }
-    }
+//    suspend fun getMsgList(rId: String): Flow<FbResponse<List<MsgResponse>?>> = callbackFlow {
+//        roomCollection
+//            .document(rId)
+//            .collection("messages")
+//            .orderBy("sentAt")
+//            .get()
+//            .addOnSuccessListener {
+//                offer(FbResponse.Success(it.toObjects()))
+//            }
+//            .addOnFailureListener {
+//                offer(FbResponse.Fail(it))
+//            }
+//
+//        awaitClose { this.cancel("StoreRepository-getMsgList() : cancel") }
+//    }
 
     suspend fun sendMsg(rId: String, msgRequest: MsgRequest) : Flow<FbResponse<Boolean>> = callbackFlow {
         roomCollection
@@ -135,9 +154,5 @@ class StoreRepository @Inject constructor(
     }
 
 
-    suspend fun updateRoom(rId: String): Flow<FbResponse<Boolean>> = callbackFlow {
-        roomCollection.document(rId)
-
-    }
 
 }

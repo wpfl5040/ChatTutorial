@@ -41,13 +41,13 @@ class MainRoomsFragment : BaseVMFragment<FragmentMainRoomsBinding, RoomsViewMode
         Log.d("//id", requireContext().getSpValue("userId", ""))
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         loadRoom()
     }
 
     private fun loadRoom(){
-        mainVM.roomDataResponse.observing {result ->
+        mainVM.roomDataResponse.observing(viewLifecycleOwner) {result ->
             binding.result = result
             binding.txtExist.gone()
             when(result){

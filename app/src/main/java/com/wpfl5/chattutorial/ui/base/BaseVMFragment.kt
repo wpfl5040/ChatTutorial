@@ -8,6 +8,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.wpfl5.chattutorial.model.Event
@@ -30,8 +31,8 @@ abstract class BaseVMFragment<VDB: ViewDataBinding, VM: BaseViewModel> : Fragmen
         return binding.root
     }
 
-    fun <T> LiveData<T>.observing(function: (T) -> Unit) {
-        observe(this@BaseVMFragment, Observer{ function(it) })
+    fun <T> LiveData<T>.observing(owner: LifecycleOwner = this@BaseVMFragment, function: (T) -> Unit) {
+        observe(owner, Observer{ function(it) })
     }
 
     fun <T> LiveData<Event<T>>.eventObserving(function: (T) -> Unit) {

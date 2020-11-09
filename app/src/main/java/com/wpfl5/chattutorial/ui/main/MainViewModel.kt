@@ -8,13 +8,16 @@ import androidx.lifecycle.switchMap
 import com.wpfl5.chattutorial.model.response.FbResponse
 import com.wpfl5.chattutorial.model.response.RoomResponse
 import com.wpfl5.chattutorial.model.response.UserResponse
+import com.wpfl5.chattutorial.repository.StorageRepository
 import com.wpfl5.chattutorial.repository.StoreRepository
 import com.wpfl5.chattutorial.ui.EventViewModelDelegate
 import com.wpfl5.chattutorial.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 
 class MainViewModel @ViewModelInject constructor(
     storeRepository: StoreRepository,
+    private val storageRepository: StorageRepository,
     delegate: EventViewModelDelegate
 ) : BaseViewModel(), EventViewModelDelegate by delegate {
 
@@ -26,11 +29,12 @@ class MainViewModel @ViewModelInject constructor(
 
     init {
         userDataResponse = liveData(coroutineIoContext) {
-            emit(FbResponse.Loading)
             try {
-                storeRepository.getUserList().collect {
-                    emit(it)
-                }
+                storeRepository.getUserList()
+                    .onStart { emit(FbResponse.Loading) }
+                    .collect {
+                        emit(it)
+                    }
             }catch (e: Exception){
                 emit(FbResponse.Fail(e))
             }
@@ -38,12 +42,11 @@ class MainViewModel @ViewModelInject constructor(
 
         roomDataResponse = loadRoom.switchMap {
             liveData(coroutineIoContext) {
-                emit(FbResponse.Loading)
                 try {
-                    storeRepository.getRoomList(it).collect {
-                        emit(it)
-                    }
-                }catch (e: Exception){
+                    storeRepository.getRoomList(it)
+                        .onStart { emit(FbResponse.Loading) }
+                        .collect { emit(it) }
+                }catch (e: Exception) {
                     emit(FbResponse.Fail(e))
                 }
             }
