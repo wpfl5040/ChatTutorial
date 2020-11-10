@@ -50,15 +50,26 @@ class StoreRepository @Inject constructor(
             } else {
                 Log.d("//StoreRepository", "Current data: null")
             }
-
-
-
         }
-
-
-
-
         awaitClose { registration.remove() }
+    }
+
+    suspend fun updateUser(uid: String, fcmToken: String, id: String, name: String, profileImage: String?) = callbackFlow {
+        usersCollection.document(uid).update(mapOf(
+            "fcmToken" to fcmToken,
+            "id" to id,
+            "name" to name,
+            "uid" to uid,
+            "profileImage" to profileImage
+        ))
+            .addOnSuccessListener {
+                offer(FbResponse.Success(true))
+            }
+            .addOnFailureListener {
+                offer(FbResponse.Fail(it))
+            }
+
+        awaitClose{ this.cancel() }
     }
 
     suspend fun getUserList(): Flow<FbResponse<List<UserResponse>?>>  = callbackFlow {
