@@ -35,7 +35,7 @@ abstract class BaseVMFragment<VDB: ViewDataBinding, VM: BaseViewModel> : Fragmen
         observe(owner, Observer{ function(it) })
     }
 
-    fun <T> LiveData<Event<T>>.eventObserving(function: (T) -> Unit) {
-        observe(this@BaseVMFragment, EventObserver { function(it) })
+    fun <T> LiveData<Event<T>>.eventObserving(owner: LifecycleOwner = this@BaseVMFragment, function: (T) -> Unit) {
+        observe(owner, EventObserver { function(it) })
     }
 }

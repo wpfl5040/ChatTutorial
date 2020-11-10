@@ -7,4 +7,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.BaseDialog" parent="@style/Theme.MaterialComponents.Light.Dialog">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
 </resources>

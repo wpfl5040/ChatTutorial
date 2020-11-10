@@ -26,7 +26,7 @@ class StoreRepository @Inject constructor(
 
     suspend fun setUserData(user: User) : Flow<FbResponse<Boolean>> = callbackFlow {
         usersCollection
-            .document()
+            .document(user.uid)
             .set(user)
             .addOnSuccessListener {
                 offer(FbResponse.Success(true))
@@ -36,24 +36,77 @@ class StoreRepository @Inject constructor(
         awaitClose { this.cancel("StoreRepository-setUserData() : cancel") }
     }
 
-    suspend fun getUserList(): Flow<FbResponse<List<UserResponse>?>>  = callbackFlow {
-        usersCollection
-            .get()
-            .addOnSuccessListener {
-                offer(FbResponse.Success(it.toObjects<UserResponse>()))
-            }
-            .addOnFailureListener {
-                offer(FbResponse.Fail(it))
+    suspend fun getUserData(uid: String) : Flow<FbResponse<UserResponse?>> = callbackFlow {
+        val registration = usersCollection.document(uid).addSnapshotListener { snapshots, e ->
+            if(e != null){
+                offer(FbResponse.Fail(e))
+                return@addSnapshotListener
             }
 
-        awaitClose { this.cancel("StoreRepository-getUserList() : cancel") }
+            if (snapshots != null && snapshots.exists()) {
+                val user = snapshots.toObject<UserResponse>()
+                Log.d("//StoreRepository", "Current data: $user")
+                offer(FbResponse.Success(user))
+            } else {
+                Log.d("//StoreRepository", "Current data: null")
+            }
+
+
+
+        }
+
+
+
+
+        awaitClose { registration.remove() }
+    }
+
+    suspend fun getUserList(): Flow<FbResponse<List<UserResponse>?>>  = callbackFlow {
+
+        val registration = usersCollection.addSnapshotListener { snapshots, e ->
+            if(e != null){
+                offer(FbResponse.Fail(e))
+                return@addSnapshotListener
+            }
+
+            val userList = mutableListOf<UserResponse>()
+
+            for(dc in snapshots!!.documentChanges){
+                when(dc.type){
+                    DocumentChange.Type.ADDED -> {
+                        val data = dc.document.toObject<UserResponse>()
+                        userList.add(data)
+                        Log.d("//StoreRepository", "New data: ${data.toString()}")
+                    }
+                    DocumentChange.Type.MODIFIED -> {
+                        //수정시 리스트에서 아이디 삭제 -> 변경된 데이터 추가
+                        userList.removeIf {
+                            it.id == dc.document.data["id"]
+                        }
+                        userList.add(dc.document.toObject<UserResponse>())
+                        Log.d("//StoreRepository", "Modified data: ${dc.document.data}")
+                    }
+                    DocumentChange.Type.REMOVED -> {
+                        userList.removeIf {
+                            it.id == dc.document.data["id"]
+                        }
+                        Log.d("//StoreRepository", "Removed data: ${dc.document.data}")
+                    }
+                }
+            }
+
+            offer(FbResponse.Success(userList))
+
+        }
+
+        awaitClose { registration.remove() }
     }
 
 
     suspend fun getRoomList(id: String) : Flow<FbResponse<List<RoomResponse>?>> = callbackFlow {
-        val ref = roomCollection.whereArrayContains("users", id)
+        val query = roomCollection.whereArrayContains("users", id)
 
-        val registration = ref.addSnapshotListener { snapshots, e ->
+        val registration = query.addSnapshotListener { snapshots, e ->
                 if (e != null) {
                     Log.w("//StoreRepository", "listen:error", e)
                     offer(FbResponse.Fail(e))
@@ -80,21 +133,6 @@ class StoreRepository @Inject constructor(
         awaitClose { registration.remove() }
     }
 
-//    suspend fun getMsgList(rId: String): Flow<FbResponse<List<MsgResponse>?>> = callbackFlow {
-//        roomCollection
-//            .document(rId)
-//            .collection("messages")
-//            .orderBy("sentAt")
-//            .get()
-//            .addOnSuccessListener {
-//                offer(FbResponse.Success(it.toObjects()))
-//            }
-//            .addOnFailureListener {
-//                offer(FbResponse.Fail(it))
-//            }
-//
-//        awaitClose { this.cancel("StoreRepository-getMsgList() : cancel") }
-//    }
 
     suspend fun sendMsg(rId: String, msgRequest: MsgRequest) : Flow<FbResponse<Boolean>> = callbackFlow {
         roomCollection
@@ -126,26 +164,6 @@ class StoreRepository @Inject constructor(
             }else{
                 val responseData = snapshots!!.toObjects<MsgResponse>()
                 offer(FbResponse.Success(responseData.sortedBy { it.sentAt }))
-//                val responseData = mutableListOf<MsgResponse>()
-//                Log.d("//testt", test.toString())
-//                for(dc in snapshots!!.documentChanges){
-//                    val data = dc.document.data
-//
-//                    val msg: String = data["msg"] as String
-//                    val receiveBy: String = data["receiveBy"] as String
-//                    val sentBy: String = data["sentBy"] as String
-//                    val sentAt: Timestamp = data["sentAt"] as Timestamp
-//
-//
-//                    responseData.add(MsgResponse(
-//                        msg, receiveBy, sentBy, sentAt
-//                    ))
-//
-//                    if(dc.type == DocumentChange.Type.ADDED){
-//                        Log.d("//repository", "New Data : ${dc.document.data}")
-//                    }
-//                }
-
             }
 
         }

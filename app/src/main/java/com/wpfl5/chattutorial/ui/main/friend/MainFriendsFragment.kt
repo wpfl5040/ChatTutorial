@@ -1,10 +1,10 @@
 package com.wpfl5.chattutorial.ui.main.friend
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.storage.FirebaseStorage
 import com.wpfl5.chattutorial.R
 import com.wpfl5.chattutorial.databinding.FragmentMainFriendsBinding
@@ -22,18 +22,24 @@ class MainFriendsFragment : BaseVMFragment<FragmentMainFriendsBinding, FriendsVi
     override fun getLayoutRes(): Int = R.layout.fragment_main_friends
     override val viewModel: FriendsViewModel by viewModels()
     private val mainVM: MainViewModel by activityViewModels()
+    @Inject lateinit var storage: FirebaseStorage
+    lateinit var name: String
 
     private val adapter = FriendAdapter {
 
     }
 
-    @Inject lateinit var storage: FirebaseStorage
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        name = requireContext().getSpValue("userId", "")
         binding.apply {
             friendViewModel = viewModel
             mainViewModel = mainVM
+            myName = name
+            lytMyInfo.setOnClickListener {
+                findNavController().navigate(R.id.action_friendsFragment_to_myProfileFragment)
+            }
             swipeRefresh.setOnRefreshListener { loadUserList() }
             recyclerFriend.adapter = adapter
         }
@@ -51,15 +57,15 @@ class MainFriendsFragment : BaseVMFragment<FragmentMainFriendsBinding, FriendsVi
                 is FbResponse.Loading -> { }
                 is FbResponse.Success -> {
                     if(!result.data.isNullOrEmpty()) {
-                        val data = result.data.toMutableList()
-                        data.forEach {
-                            it.profile = storage.reference.child("profileImage/${it.profileImage}")
-                            Log.d("//profile",it.profile.toString())
+                        result.data.toMutableList().apply {
+                            forEach {user ->
+                                user.profile = storage.reference.child("profileImage/${user.profileImage}")
+                            }
+                            removeIf {user ->
+                                user.id == name
+                            }
+                            adapter.submitList(this)
                         }
-                        data.removeIf {
-                            it.id == requireContext().getSpValue("userId", "")
-                        }
-                        adapter.submitList(data)
                     }
                 }
                 is FbResponse.Fail -> {
@@ -68,5 +74,8 @@ class MainFriendsFragment : BaseVMFragment<FragmentMainFriendsBinding, FriendsVi
             }
         }
     }
+
+
+
 
 }

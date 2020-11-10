@@ -32,7 +32,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             if(preferenceId.isBlank() || auth.currentUser == null){
                 startAct<LoginActivity>()
             }else{
-                if(auth.currentUser!!.uid == preferenceId){
+                if(auth.currentUser!!.email == preferenceId){
                     startAct<MainActivity>()
                 }else{
                     startAct<LoginActivity>()

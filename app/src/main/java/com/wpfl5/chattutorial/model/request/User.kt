@@ -6,6 +6,7 @@ data class AuthUser (
 )
 
 data class User(
+    val uid: String,
     val id: String,
     val name: String,
     val fcmToken: String?

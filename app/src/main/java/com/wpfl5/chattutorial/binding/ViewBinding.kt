@@ -55,11 +55,13 @@ object ViewBinding{
 
     @JvmStatic
     @BindingAdapter("imageWithUi")
-    fun fbImageWithUi(view: ImageView, path: StorageReference){
-        GlideApp.with(view.context)
-            .load(path)
-            .circleCrop()
-            .into(view)
+    fun fbImageWithUi(view: ImageView, path: StorageReference?){
+        if(path != null){
+            GlideApp.with(view.context)
+                .load(path)
+                .circleCrop()
+                .into(view)
+        }
     }
 
 }

@@ -31,9 +31,8 @@ abstract class BaseVMActivity<VDB: ViewDataBinding, VM: BaseViewModel>
         observe(owner, Observer{ function(it) })
     }
 
-    fun <T> LiveData<Event<T>>.eventObserving(function: (T) -> Unit) {
-        observe(this@BaseVMActivity,
-            EventObserver { function(it) })
+    fun <T> LiveData<Event<T>>.eventObserving(owner: LifecycleOwner = this@BaseVMActivity, function: (T) -> Unit) {
+        observe(owner, EventObserver { function(it) })
     }
 
 }

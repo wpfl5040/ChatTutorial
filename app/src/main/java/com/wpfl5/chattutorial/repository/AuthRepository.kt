@@ -29,11 +29,11 @@ class AuthRepository @Inject constructor(
         awaitClose { this.cancel("AuthRepository : Login Cancel") }
     }
 
-    suspend fun register(user: AuthUser) : Flow<FbResponse<Boolean>> = callbackFlow {
+    suspend fun register(user: AuthUser) : Flow<FbResponse<String?>> = callbackFlow {
         auth.createUserWithEmailAndPassword(user.id, user.password)
             .addOnCompleteListener { task ->
                 if(task.isSuccessful){
-                    offer(FbResponse.Success(true))
+                    offer(FbResponse.Success(auth.uid))
                 }
             }
             .addOnFailureListener {

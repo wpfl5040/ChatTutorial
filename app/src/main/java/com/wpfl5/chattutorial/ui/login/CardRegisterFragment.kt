@@ -53,7 +53,9 @@ class CardRegisterFragment : BaseVMFragment<LoginCardBackBinding, LoginViewModel
         viewModel.registerAuthResponse.observing(viewLifecycleOwner) { result ->
             when(result){
                 is FbResponse.Loading -> { loading(true) }
-                is FbResponse.Success -> { registerStoreObserver(id, name) }
+                is FbResponse.Success -> {
+                    registerStoreObserver(result.data!!, id, name)
+                }
                 is FbResponse.Fail -> {
                     loading(false)
                     toast(requireContext(), result.e.message)
@@ -62,8 +64,8 @@ class CardRegisterFragment : BaseVMFragment<LoginCardBackBinding, LoginViewModel
         }
     }
 
-    private fun registerStoreObserver(id: String, name: String){
-        viewModel.registerStore(id,name)
+    private fun registerStoreObserver(uid: String, id: String, name: String){
+        viewModel.registerStore(uid, id,name)
         viewModel.registerStoreResponse.observing(viewLifecycleOwner) { result->
             when(result){
                 is FbResponse.Loading -> { }

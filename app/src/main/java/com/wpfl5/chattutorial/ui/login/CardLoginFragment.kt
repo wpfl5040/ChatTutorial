@@ -68,15 +68,33 @@ class CardLoginFragment: BaseVMFragment<LoginCardFrontBinding, LoginViewModel>()
     private fun loginObserver(){
         viewModel.loginResponse.observing(viewLifecycleOwner) { result ->
             when(result){
-                is FbResponse.Loading -> { }
+                is FbResponse.Loading -> {
+                    loading(true)
+                }
                 is FbResponse.Success -> {
                     requireContext().putSpValue("userId", userId)
                     requireActivity().finish()
                     startAct<MainActivity>()
                 }
-                is FbResponse.Fail -> { toast(requireContext(), result.e.message) }
+                is FbResponse.Fail -> {
+                    loading(false)
+                    toast(requireContext(), result.e.message)
+                }
             }
         }
+    }
+
+    private fun loading(visibility: Boolean){
+        with(binding){
+            if(visibility){
+                progressLogin.visible()
+                btnLogin.gone()
+            }else{
+                progressLogin.gone()
+                btnLogin.visible()
+            }
+        }
+
     }
 
 }

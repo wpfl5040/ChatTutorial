@@ -11,10 +11,13 @@
             name="mainViewModel"
             type="com.wpfl5.chattutorial.ui.main.MainViewModel" />
 
-
         <variable
             name="result"
             type="FbResponse" />
+
+        <variable
+            name="myName"
+            type="String" />
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,6 +46,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_friend"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:isRefreshing="@{result instanceof FbResponse.Loading}">
 
 
@@ -56,7 +60,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_margin="12dp">
+                android:padding="12dp"
+                android:background="?android:attr/selectableItemBackground">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profile_image"
@@ -75,7 +80,8 @@
                     android:textColor="#263238"
                     android:padding="24dp"
                     android:textSize="18sp"
-                    android:text="@string/me" />
+                    android:text="@{myName}"
+                    tools:text="나"/>
 
             </LinearLayout>
 

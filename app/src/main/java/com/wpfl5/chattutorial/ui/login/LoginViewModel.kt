@@ -68,8 +68,9 @@ class LoginViewModel
         _registerAuthLiveData.value = user
     }
 
-    fun registerStore(id: String, name: String){
+    fun registerStore(uid: String, id: String, name: String){
         val user = User(
+            uid,
             id,
             name,
             _fcmToken.value
