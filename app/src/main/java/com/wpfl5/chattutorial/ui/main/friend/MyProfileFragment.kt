@@ -27,6 +27,7 @@ class MyProfileFragment : BaseVMFragment<FragmentMyProfileBinding, MainViewModel
     override val viewModel: MainViewModel by activityViewModels()
     private val friendViewModel: FriendsViewModel by viewModels()
     @Inject lateinit var storage: FirebaseStorage
+    lateinit var user: UserResponse
 
     companion object{
         private const val REQUEST_GALLERY_PROFILE_CODE = 100
@@ -91,12 +92,30 @@ class MyProfileFragment : BaseVMFragment<FragmentMyProfileBinding, MainViewModel
                 is FbResponse.Loading -> { }
                 is FbResponse.Success -> {
                     //firestore update 부분
-                    toast(requireContext(), "성공")
+                    updateUserData(result.data)
+                    toast(requireContext(), "Success - ImageUpload")
                 }
                 is FbResponse.Fail -> {
                     toast(requireContext(), result.e.message)
                 }
             }
+        }
+    }
+
+    private fun updateUserData(fileName: String){
+        viewModel.updateUserData(
+            fcmToken = user.fcmToken!!,
+            id = user.id,
+            uid = user.uid,
+            name = user.name,
+            profileImage = fileName
+        ).observing(viewLifecycleOwner) {
+            when(it){
+                is FbResponse.Loading -> { }
+                is FbResponse.Success -> { toast(requireContext(), "please wait....") }
+                is FbResponse.Fail -> { toast(requireContext(), it.e.message) }
+            }
+
         }
     }
 
@@ -111,7 +130,7 @@ class MyProfileFragment : BaseVMFragment<FragmentMyProfileBinding, MainViewModel
             when (result) {
                 is FbResponse.Loading -> { }
                 is FbResponse.Success -> {
-                    val user = result.data!!
+                    user = result.data!!
                     user.profile = storage.reference.child("profileImage/${user.profileImage}")
                     binding.user = user
                     Log.d("//user", user.toString())

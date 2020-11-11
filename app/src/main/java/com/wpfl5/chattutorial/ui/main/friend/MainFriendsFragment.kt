@@ -9,6 +9,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.wpfl5.chattutorial.R
 import com.wpfl5.chattutorial.databinding.FragmentMainFriendsBinding
 import com.wpfl5.chattutorial.ext.getSpValue
+import com.wpfl5.chattutorial.ext.gone
 import com.wpfl5.chattutorial.ext.toast
 import com.wpfl5.chattutorial.model.response.FbResponse
 import com.wpfl5.chattutorial.ui.adapter.FriendAdapter
@@ -25,9 +26,7 @@ class MainFriendsFragment : BaseVMFragment<FragmentMainFriendsBinding, FriendsVi
     @Inject lateinit var storage: FirebaseStorage
     lateinit var name: String
 
-    private val adapter = FriendAdapter {
-
-    }
+    private val adapter = FriendAdapter { }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,11 +35,9 @@ class MainFriendsFragment : BaseVMFragment<FragmentMainFriendsBinding, FriendsVi
         binding.apply {
             friendViewModel = viewModel
             mainViewModel = mainVM
-            myName = name
             lytMyInfo.setOnClickListener {
                 findNavController().navigate(R.id.action_friendsFragment_to_myProfileFragment)
             }
-            swipeRefresh.setOnRefreshListener { loadUserList() }
             recyclerFriend.adapter = adapter
         }
     }
@@ -56,21 +53,18 @@ class MainFriendsFragment : BaseVMFragment<FragmentMainFriendsBinding, FriendsVi
             when(result){
                 is FbResponse.Loading -> { }
                 is FbResponse.Success -> {
+                    binding.progressFriend.gone()
                     if(!result.data.isNullOrEmpty()) {
-                        result.data.toMutableList().apply {
-                            forEach {user ->
-                                user.profile = storage.reference.child("profileImage/${user.profileImage}")
-                            }
-                            removeIf {user ->
-                                user.id == name
-                            }
-                            adapter.submitList(this)
+                        val responseData = result.data.toMutableList()
+                        responseData.forEach {user ->
+                            user.profile = storage.reference.child("profileImage/${user.profileImage}")
                         }
+                        binding.user = responseData.first { it.id == name }
+                        responseData.removeIf {user -> user.id == name }
+                        adapter.submitList(responseData.toList())
                     }
                 }
-                is FbResponse.Fail -> {
-                    toast(requireContext(), result.e.message)
-                }
+                is FbResponse.Fail -> { toast(requireContext(), result.e.message) }
             }
         }
     }

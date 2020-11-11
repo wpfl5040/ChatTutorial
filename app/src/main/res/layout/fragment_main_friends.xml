@@ -16,8 +16,8 @@
             type="FbResponse" />
 
         <variable
-            name="myName"
-            type="String" />
+            name="user"
+            type="com.wpfl5.chattutorial.model.response.UserResponse" />
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,71 +39,70 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_friend"
+    <ProgressBar
+        android:id="@+id/progress_friend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:isRefreshing="@{result instanceof FbResponse.Loading}">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/txt_friend">
 
         <LinearLayout
+            android:id="@+id/lyt_myInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:background="?android:attr/selectableItemBackground">
 
-            <LinearLayout
-                android:id="@+id/lyt_myInfo"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_baseline_person_24"
+                android:layout_gravity="center"
+                app:civ_border_width="1dp"
+                app:civ_border_color="#A1A1A1"
+                app:imageWithUi="@{user.profile}"/>
+
+            <TextView
+                android:id="@+id/txt_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="12dp"
-                android:background="?android:attr/selectableItemBackground">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/profile_image"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/ic_baseline_person_24"
-                    android:layout_gravity="center"
-                    app:civ_border_width="1dp"
-                    app:civ_border_color="#A1A1A1" />
-
-                <TextView
-                    android:id="@+id/txt_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    android:textColor="#263238"
-                    android:padding="24dp"
-                    android:textSize="18sp"
-                    android:text="@{myName}"
-                    tools:text="나"/>
-
-            </LinearLayout>
-
-            <View
-                android:id="@+id/view_divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#e6e6e6" />
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_friend"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintTop_toBottomOf="@id/view_divider"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:visibleGone="@{result instanceof FbResponse.Success}"
-                tools:listitem="@layout/row_friend"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="#263238"
+                android:padding="24dp"
+                android:textSize="18sp"
+                android:text="@{user.name}"
+                tools:text="나"/>
 
         </LinearLayout>
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        <View
+            android:id="@+id/view_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#e6e6e6" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_friend"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/view_divider"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/row_friend"/>
+
+    </LinearLayout>
 
 
 

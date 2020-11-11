@@ -1,5 +1,6 @@
 package com.wpfl5.chattutorial.ui.adapter
 
+import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
 import com.wpfl5.chattutorial.R
 import com.wpfl5.chattutorial.databinding.RowFriendBinding
@@ -11,9 +12,11 @@ class FriendAdapter(
 ) : BaseAdapter<UserResponse, RowFriendBinding>(
 object : DiffUtil.ItemCallback<UserResponse>() {
     override fun areItemsTheSame(oldItem: UserResponse, newItem: UserResponse): Boolean {
+        Log.d("//test1","//test1")
         return oldItem.id == newItem.id
     }
     override fun areContentsTheSame(oldItem: UserResponse, newItem: UserResponse): Boolean {
+        Log.d("//test2","//test2")
         return oldItem == newItem
     }
 }

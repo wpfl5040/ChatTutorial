@@ -26,7 +26,7 @@ class StorageRepository @Inject constructor(
         ref.child("profileImage/")
             .child(fileName)
             .putFile(filePath)
-            .addOnCompleteListener { offer(FbResponse.Success(true)) }
+            .addOnCompleteListener { offer(FbResponse.Success(fileName)) }
             .addOnFailureListener { offer(FbResponse.Fail(it)) }
 
 

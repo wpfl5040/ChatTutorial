@@ -73,6 +73,7 @@ class StoreRepository @Inject constructor(
     }
 
     suspend fun getUserList(): Flow<FbResponse<List<UserResponse>?>>  = callbackFlow {
+        val userList = mutableListOf<UserResponse>()
 
         val registration = usersCollection.addSnapshotListener { snapshots, e ->
             if(e != null){
@@ -80,7 +81,6 @@ class StoreRepository @Inject constructor(
                 return@addSnapshotListener
             }
 
-            val userList = mutableListOf<UserResponse>()
 
             for(dc in snapshots!!.documentChanges){
                 when(dc.type){
@@ -90,12 +90,12 @@ class StoreRepository @Inject constructor(
                         Log.d("//StoreRepository", "New data: ${data.toString()}")
                     }
                     DocumentChange.Type.MODIFIED -> {
+                        Log.d("//이전 데이터", userList.toString())
                         //수정시 리스트에서 아이디 삭제 -> 변경된 데이터 추가
-                        userList.removeIf {
-                            it.id == dc.document.data["id"]
-                        }
-                        userList.add(dc.document.toObject<UserResponse>())
-                        Log.d("//StoreRepository", "Modified data: ${dc.document.data}")
+                        val data = dc.document.toObject<UserResponse>()
+                        userList.removeIf { it.id == data.id }
+                        userList.add(data)
+                        Log.d("//StoreRepository", "Modified data: $data")
                     }
                     DocumentChange.Type.REMOVED -> {
                         userList.removeIf {

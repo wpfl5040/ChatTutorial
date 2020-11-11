@@ -1,5 +1,6 @@
 package com.wpfl5.chattutorial.binding
 
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -57,6 +58,7 @@ object ViewBinding{
     @JvmStatic
     @BindingAdapter("imageWithUi")
     fun fbImageWithUi(view: ImageView, path: StorageReference?){
+        Log.d("//path", path.toString())
         if(path != null){
             GlideApp.with(view.context)
                 .load(path)

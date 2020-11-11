@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="mainViewModel"
+            type="com.wpfl5.chattutorial.ui.main.MainViewModel" />
+
+        <variable
+            name="user"
+            type="com.wpfl5.chattutorial.model.response.UserResponse" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grey">
+
+        <ImageButton
+            android:id="@+id/btn_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/grey"
+            android:src="@drawable/ic_baseline_close_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_baseline_person_24"
+            app:imageWithUi="@{user.profile}"
+            app:civ_border_color="@android:color/white"
+            app:civ_border_width="1dp"
+            app:layout_constraintBottom_toTopOf="@+id/txt_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/txt_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:padding="12dp"
+            android:layout_marginBottom="48dp"
+            android:text="@{user.name}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/view"
+            tools:text="Name" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/white"
+            app:layout_constraintBottom_toTopOf="@+id/lyt_editProfile" />
+
+        <LinearLayout
+            android:id="@+id/lyt_editProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="24dp"
+            android:weightSum="3"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/btn_edit_background"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_baseline_picture_in_picture_24"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:text="배경 편집"
+                android:textColor="@android:color/white" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/btn_edit_profile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_baseline_edit_24"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:text="프로필 편집"
+                android:textColor="@android:color/white" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/btn_edit_profileImage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_baseline_photo_camera_24"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:text="사진 편집"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
