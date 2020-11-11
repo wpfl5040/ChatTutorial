@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_main_friends">
         <action
             android:id="@+id/action_friendsFragment_to_myProfileFragment"
-            app:destination="@id/myProfileFragment" />
+            app:destination="@id/myProfileFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
 
     <fragment
@@ -22,7 +26,11 @@
         tools:layout="@layout/fragment_main_rooms">
         <action
             android:id="@+id/action_roomsFragment_to_chatActivity"
-            app:destination="@id/chatActivity" />
+            app:destination="@id/chatActivity"
+            app:enterAnim="@anim/slide_from_rigth"
+            app:exitAnim="@anim/slide_to_left"
+            app:popExitAnim="@anim/slide_to_right"
+            app:popEnterAnim="@anim/slide_from_left"/>
     </fragment>
     <activity
         android:id="@+id/chatActivity"
