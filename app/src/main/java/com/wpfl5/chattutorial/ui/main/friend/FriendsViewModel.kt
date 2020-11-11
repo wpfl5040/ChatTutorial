@@ -1,5 +1,6 @@
 package com.wpfl5.chattutorial.ui.main.friend
 
+import android.net.Uri
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.wpfl5.chattutorial.model.Event
 import com.wpfl5.chattutorial.model.response.FbResponse
 import com.wpfl5.chattutorial.model.response.UserResponse
+import com.wpfl5.chattutorial.repository.StorageRepository
 import com.wpfl5.chattutorial.repository.StoreRepository
 import com.wpfl5.chattutorial.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.collect
@@ -15,7 +17,8 @@ import kotlinx.coroutines.flow.onStart
 
 class FriendsViewModel @ViewModelInject constructor(
     storeRepository: StoreRepository,
-    auth: FirebaseAuth
+    private val auth: FirebaseAuth,
+    private val storageRepository: StorageRepository
 ) : BaseViewModel() {
 
 
@@ -25,6 +28,11 @@ class FriendsViewModel @ViewModelInject constructor(
             .collect { emit(it) }
     }
 
+    fun saveImg(filePath: Uri) = liveData(coroutineIoContext) {
+        storageRepository.putProfileImage(auth.uid!!, filePath)
+            .onStart { emit(FbResponse.Loading) }
+            .collect { emit(it) }
+    }
 
 
     private val _showMyProfile = MutableLiveData<Event<Unit>>()

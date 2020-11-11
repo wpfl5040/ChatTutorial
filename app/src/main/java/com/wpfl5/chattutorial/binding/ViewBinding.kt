@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.databinding.BindingAdapter
 import com.google.firebase.Timestamp
 import com.google.firebase.storage.StorageReference
+import com.wpfl5.chattutorial.R
 import com.wpfl5.chattutorial.di.GlideApp
 import com.wpfl5.chattutorial.ext.getSpValue
 import java.text.SimpleDateFormat
@@ -60,6 +61,7 @@ object ViewBinding{
             GlideApp.with(view.context)
                 .load(path)
                 .circleCrop()
+                .error(R.drawable.ic_baseline_person_24)
                 .into(view)
         }
     }

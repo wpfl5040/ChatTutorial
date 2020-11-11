@@ -14,18 +14,19 @@ class StorageRepository @Inject constructor(
     private val storage: FirebaseStorage
 ) {
 
-    suspend fun putProfileImage(filePath: Uri) = callbackFlow {
+    suspend fun putProfileImage(id: String, filePath: Uri) = callbackFlow {
         val ref = storage.getReferenceFromUrl("gs://chattutorial-aeedc.appspot.com")
 
         val currentDateTime =
             SimpleDateFormat("MM월-dd일-HH:mm:ss", Locale.KOREA).format(System.currentTimeMillis())
 
-        val fileName = "$currentDateTime"
+
+        val fileName = "$currentDateTime-$id"
 
         ref.child("profileImage/")
             .child(fileName)
             .putFile(filePath)
-            .addOnSuccessListener { offer(FbResponse.Success(true)) }
+            .addOnCompleteListener { offer(FbResponse.Success(true)) }
             .addOnFailureListener { offer(FbResponse.Fail(it)) }
 
 

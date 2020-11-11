@@ -2,6 +2,7 @@ package com.wpfl5.chattutorial.ui.main.friend
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -50,17 +51,19 @@ class MyProfileFragment : BaseVMFragment<FragmentMyProfileBinding, MainViewModel
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(data != null && requestCode == Activity.RESULT_OK){
-            if(requestCode == REQUEST_GALLERY_PROFILE_CODE) {
+        if(data != null && resultCode == Activity.RESULT_OK){
+            if(requestCode == REQUEST_GALLERY_PROFILE_CODE){
                 val filePath = data.data
                 if(filePath != null) {
                     // save Image
+                    saveImgObserver(filePath)
                     Log.d("//filePath - profile", filePath.toString())
                 }
             }else if(requestCode == REQUEST_GALLERY_BACKGROUND_CODE) {
                 val filePath = data.data
                 if(filePath != null) {
                     // save Image
+                    saveImgObserver(filePath)
                     Log.d("//filePath- background", filePath.toString())
                 }
             }
@@ -82,6 +85,20 @@ class MyProfileFragment : BaseVMFragment<FragmentMyProfileBinding, MainViewModel
     }
 
 
+    private fun saveImgObserver(uri: Uri){
+        friendViewModel.saveImg(uri).observing(viewLifecycleOwner) { result ->
+            when(result){
+                is FbResponse.Loading -> { }
+                is FbResponse.Success -> {
+                    //firestore update 부분
+                    toast(requireContext(), "성공")
+                }
+                is FbResponse.Fail -> {
+                    toast(requireContext(), result.e.message)
+                }
+            }
+        }
+    }
 
     private fun myProfileDialogObserver(user: UserResponse) {
         friendViewModel.showMyProfile.eventObserving(viewLifecycleOwner) {
@@ -97,6 +114,7 @@ class MyProfileFragment : BaseVMFragment<FragmentMyProfileBinding, MainViewModel
                     val user = result.data!!
                     user.profile = storage.reference.child("profileImage/${user.profileImage}")
                     binding.user = user
+                    Log.d("//user", user.toString())
                     myProfileDialogObserver(user)
                 }
                 is FbResponse.Fail -> {

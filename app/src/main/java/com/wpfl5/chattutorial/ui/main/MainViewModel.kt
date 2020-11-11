@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 
 class MainViewModel @ViewModelInject constructor(
-    storeRepository: StoreRepository,
+    private val storeRepository: StoreRepository,
     private val storageRepository: StorageRepository,
     delegate: EventViewModelDelegate
 ) : BaseViewModel(), EventViewModelDelegate by delegate {
@@ -52,6 +52,14 @@ class MainViewModel @ViewModelInject constructor(
             }
         }
 
+    }
+
+    fun updateUserData(fcmToken: String, id: String, name: String, uid: String, profileImage: String?) = liveData(coroutineIoContext) {
+        storeRepository.updateUser(
+            uid, fcmToken, id, name, profileImage
+        )
+            .onStart { emit(FbResponse.Loading) }
+            .collect { emit(it) }
     }
 
 
