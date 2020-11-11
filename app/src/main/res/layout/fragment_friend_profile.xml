@@ -74,39 +74,39 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/btn_edit_background"
+                android:id="@+id/btn_chat"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/ic_baseline_picture_in_picture_24"
+                android:drawableTop="@drawable/ic_baseline_chat_24"
                 android:drawablePadding="10dp"
                 android:gravity="center"
-                android:text="배경 편집"
+                android:text="1:1채팅"
                 android:textColor="@android:color/white" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/btn_edit_profile"
+                android:id="@+id/btn_phone"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/ic_baseline_edit_24"
+                android:drawableTop="@drawable/ic_baseline_phone_24"
                 android:drawablePadding="10dp"
                 android:gravity="center"
-                android:text="프로필 편집"
+                android:text="통화하기"
                 android:textColor="@android:color/white" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/btn_edit_profileImage"
+                android:id="@+id/btn_zoom"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/ic_baseline_photo_camera_24"
+                android:drawableTop="@drawable/ic_baseline_zoom_out_map_24"
                 android:drawablePadding="10dp"
                 android:gravity="center"
-                android:text="사진 편집"
+                android:text="사진 보기"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>
