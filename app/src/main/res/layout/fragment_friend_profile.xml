@@ -10,7 +10,7 @@
             type="com.wpfl5.chattutorial.ui.main.MainViewModel" />
 
         <variable
-            name="user"
+            name="friend"
             type="com.wpfl5.chattutorial.model.response.UserResponse" />
 
     </data>
@@ -27,7 +27,8 @@
             android:backgroundTint="@color/grey"
             android:src="@drawable/ic_baseline_close_24"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:registerNavigateUp="@{mainViewModel}"/>
 
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -35,7 +36,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/ic_baseline_person_24"
-            app:imageWithUi="@{user.profile}"
+            app:imageWithUi="@{friend.profile}"
             app:civ_border_color="@android:color/white"
             app:civ_border_width="1dp"
             app:layout_constraintBottom_toTopOf="@+id/txt_name"
@@ -52,7 +53,7 @@
             android:textStyle="bold"
             android:padding="12dp"
             android:layout_marginBottom="48dp"
-            android:text="@{user.name}"
+            android:text="@{friend.name}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/view"

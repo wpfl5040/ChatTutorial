@@ -26,7 +26,10 @@ class MainFriendsFragment : BaseVMFragment<FragmentMainFriendsBinding, FriendsVi
     @Inject lateinit var storage: FirebaseStorage
     lateinit var name: String
 
-    private val adapter = FriendAdapter { }
+    private val adapter = FriendAdapter {
+        findNavController()
+            .navigate(MainFriendsFragmentDirections.actionFriendsFragmentToFriendProfileFragment(it))
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

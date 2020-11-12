@@ -113,6 +113,30 @@ class StoreRepository @Inject constructor(
         awaitClose { registration.remove() }
     }
 
+//    suspend fun findRoomData(myId: String, friendId: String) : Flow<FbResponse<RoomResponse?>> = callbackFlow {
+//        val query =
+//            roomCollection
+//                .where("users", myId)
+//                .whereEqualTo("users", friendId)
+//                .limit(1)
+//
+//        query.get()
+//            .addOnSuccessListener {
+//                if(it.toObjects<RoomResponse>().isEmpty()){
+//                    Log.d("//succ", it.toObjects<RoomResponse>().toString())
+//                }else{
+//                    val room = it.toObjects<RoomResponse>()[0]
+//                    offer(FbResponse.Success(room))
+//                }
+//
+//            }
+//            .addOnFailureListener {
+//                offer(FbResponse.Fail(it))
+//            }
+//
+//        awaitClose { this.cancel() }
+//
+//    }
 
     suspend fun getRoomList(id: String) : Flow<FbResponse<List<RoomResponse>?>> = callbackFlow {
         val query = roomCollection.whereArrayContains("users", id)

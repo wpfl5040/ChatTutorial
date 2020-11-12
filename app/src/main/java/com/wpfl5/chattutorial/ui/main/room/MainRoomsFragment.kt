@@ -19,7 +19,7 @@ import com.wpfl5.chattutorial.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainRoomsFragment : BaseVMFragment<FragmentMainRoomsBinding, RoomsViewModel>() {
+class                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           MainRoomsFragment : BaseVMFragment<FragmentMainRoomsBinding, RoomsViewModel>() {
     override fun getLayoutRes(): Int = R.layout.fragment_main_rooms
     override val viewModel: RoomsViewModel by viewModels()
     private val mainVM: MainViewModel by activityViewModels()
@@ -33,7 +33,7 @@ class MainRoomsFragment : BaseVMFragment<FragmentMainRoomsBinding, RoomsViewMode
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
             roomViewModel = viewModel
-            mainViewModel = mainVM.apply { loadRoomData(requireContext().getSpValue("userId", "")) }
+            mainViewModel = mainVM
             swipeRefresh.setOnRefreshListener { loadRoom() }
             recyclerRoom.adapter = adapter
         }

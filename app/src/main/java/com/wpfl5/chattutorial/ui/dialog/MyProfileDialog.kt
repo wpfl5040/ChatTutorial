@@ -45,7 +45,10 @@ class MyProfileDialog(
             when (result) {
                 is FbResponse.Loading -> { }
                 is FbResponse.Success -> { dismiss() }
-                is FbResponse.Fail -> { toast(requireContext(), result.e.message) }
+                is FbResponse.Fail -> {
+                    dismiss()
+                    toast(requireContext(), result.e.message)
+                }
             }
         }
     }

@@ -34,8 +34,10 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, MainViewModel>() {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_container)
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             when(destination.id){
-                R.id.myProfileFragment -> binding.bottomNavigationView.gone()
-                else -> binding.bottomNavigationView.visible()
+                R.id.myProfileFragment -> bottomNavVisibility(false)
+                R.id.friendProfileFragment -> bottomNavVisibility(false)
+                R.id.chatActivity -> bottomNavVisibility(false)
+                else -> bottomNavVisibility(true)
             }
         }
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController)
@@ -44,6 +46,11 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, MainViewModel>() {
     private fun eventObserving(){
         viewModel.backButtonEvent.eventObserving(this) { navController.navigateUp() }
         setToastObserver(viewModel.toastObservable)
+    }
+
+    private fun bottomNavVisibility(visibility: Boolean) {
+        if(visibility) binding.bottomNavigationView.visible()
+        else binding.bottomNavigationView.gone()
     }
 
 

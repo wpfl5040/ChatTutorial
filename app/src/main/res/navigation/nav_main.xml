@@ -17,6 +17,13 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
+        <action
+            android:id="@+id/action_friendsFragment_to_friendProfileFragment"
+            app:destination="@id/friendProfileFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"/>
     </fragment>
 
     <fragment
@@ -46,4 +53,20 @@
         android:name="com.wpfl5.chattutorial.ui.main.friend.MyProfileFragment"
         android:label="MyProfileFragment"
         tools:layout="@layout/fragment_my_profile"/>
+    <fragment
+        android:id="@+id/friendProfileFragment"
+        android:name="com.wpfl5.chattutorial.ui.main.friend.FriendProfileFragment"
+        android:label="FriendProfileFragment"
+        tools:layout="@layout/fragment_friend_profile">
+        <argument
+            android:name="user"
+            app:argType="com.wpfl5.chattutorial.model.response.UserResponse" />
+        <action
+            android:id="@+id/action_friendProfileFragment_to_chatActivity"
+            app:destination="@id/chatActivity"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
 </navigation>

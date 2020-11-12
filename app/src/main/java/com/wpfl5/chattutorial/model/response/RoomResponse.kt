@@ -13,9 +13,9 @@ data class RoomResponse(
     val name: String,
     val lastMessage: String,
     val createdBy: String,
-    val users: List<String>?,
+    val users: List<String>,
     @ServerTimestamp val createdAt: Timestamp?,
     @ServerTimestamp val modifiedAt: Timestamp?
 ) : Parcelable {
-    constructor() : this("","","","",null,null, null)
+    constructor() : this("","","","", listOf<String>(),null, null)
 }

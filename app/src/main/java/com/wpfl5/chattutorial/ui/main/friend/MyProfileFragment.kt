@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.google.firebase.storage.FirebaseStorage
 import com.wpfl5.chattutorial.R
 import com.wpfl5.chattutorial.databinding.FragmentMyProfileBinding
@@ -38,7 +37,6 @@ class MyProfileFragment : BaseVMFragment<FragmentMyProfileBinding, MainViewModel
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
             mainViewModel = viewModel
-            btnClose.setOnClickListener { findNavController().navigateUp() }
             btnEditBackground.setOnClickListener { goToGallery(1) }
             btnEditProfile.setOnClickListener { friendViewModel.showMyProfileDialog() }
             btnEditProfileImage.setOnClickListener { goToGallery(0) }

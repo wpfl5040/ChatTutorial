@@ -28,7 +28,8 @@
             android:backgroundTint="@color/grey"
             android:src="@drawable/ic_baseline_close_24"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:registerNavigateUp="@{mainViewModel}"/>
 
 
         <de.hdodenhof.circleimageview.CircleImageView
