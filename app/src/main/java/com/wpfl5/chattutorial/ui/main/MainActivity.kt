@@ -37,6 +37,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, MainViewModel>() {
                 R.id.myProfileFragment -> bottomNavVisibility(false)
                 R.id.friendProfileFragment -> bottomNavVisibility(false)
                 R.id.chatActivity -> bottomNavVisibility(false)
+                R.id.chattingFragment -> bottomNavVisibility(false)
                 else -> bottomNavVisibility(true)
             }
         }

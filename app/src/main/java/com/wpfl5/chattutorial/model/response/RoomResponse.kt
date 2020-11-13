@@ -10,12 +10,11 @@ import kotlinx.android.parcel.Parcelize
 data class RoomResponse(
     @DocumentId
     val rid: String,
-    val name: String,
     val lastMessage: String,
     val createdBy: String,
     val users: List<String>,
     @ServerTimestamp val createdAt: Timestamp?,
     @ServerTimestamp val modifiedAt: Timestamp?
 ) : Parcelable {
-    constructor() : this("","","","", listOf<String>(),null, null)
+    constructor() : this("","","", listOf<String>(),null, null)
 }

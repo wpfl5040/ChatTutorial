@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects
 import com.wpfl5.chattutorial.model.request.MsgRequest
+import com.wpfl5.chattutorial.model.request.RoomRequest
 import com.wpfl5.chattutorial.model.request.User
 import com.wpfl5.chattutorial.model.response.FbResponse
 import com.wpfl5.chattutorial.model.response.MsgResponse
@@ -113,33 +114,11 @@ class StoreRepository @Inject constructor(
         awaitClose { registration.remove() }
     }
 
-//    suspend fun findRoomData(myId: String, friendId: String) : Flow<FbResponse<RoomResponse?>> = callbackFlow {
-//        val query =
-//            roomCollection
-//                .where("users", myId)
-//                .whereEqualTo("users", friendId)
-//                .limit(1)
-//
-//        query.get()
-//            .addOnSuccessListener {
-//                if(it.toObjects<RoomResponse>().isEmpty()){
-//                    Log.d("//succ", it.toObjects<RoomResponse>().toString())
-//                }else{
-//                    val room = it.toObjects<RoomResponse>()[0]
-//                    offer(FbResponse.Success(room))
-//                }
-//
-//            }
-//            .addOnFailureListener {
-//                offer(FbResponse.Fail(it))
-//            }
-//
-//        awaitClose { this.cancel() }
-//
-//    }
 
     suspend fun getRoomList(id: String) : Flow<FbResponse<List<RoomResponse>?>> = callbackFlow {
         val query = roomCollection.whereArrayContains("users", id)
+        val roomList = mutableListOf<RoomResponse>()
+
 
         val registration = query.addSnapshotListener { snapshots, e ->
                 if (e != null) {
@@ -148,7 +127,6 @@ class StoreRepository @Inject constructor(
                     return@addSnapshotListener
                 }
 
-                val roomList = mutableListOf<RoomResponse>()
 
                 for (dc in snapshots!!.documentChanges) {
                     when (dc.type) {
@@ -157,15 +135,53 @@ class StoreRepository @Inject constructor(
                             roomList.add(data)
                             Log.d("//StoreRepository", "New city: ${dc.document.data}")
                         }
-                        DocumentChange.Type.MODIFIED -> Log.d("//StoreRepository", "Modified city: ${dc.document.data}")
-                        DocumentChange.Type.REMOVED -> Log.d("//StoreRepository", "Removed city: ${dc.document.data}")
+                        DocumentChange.Type.MODIFIED -> {
+                            Log.d("//StoreRepository", "Modified city: ${dc.document.data}")
+                        }
+                        DocumentChange.Type.REMOVED -> {
+                            Log.d("//StoreRepository", "Removed city: ${dc.document.data}")
+                        }
                     }
                 }
                 offer(FbResponse.Success(roomList))
-
             }
 
         awaitClose { registration.remove() }
+    }
+
+    suspend fun getRoomData(myId: String, friendId: String) = callbackFlow {
+        roomCollection
+            .whereArrayContains("users", friendId)
+            .get()
+            .addOnSuccessListener {
+                var responseData: RoomResponse? = null
+
+                val roomList = it.toObjects<RoomResponse>()
+                roomList.forEach {room ->
+                    if(room.users.contains(myId)){
+                        //채팅이 있는 경우
+                        responseData = room
+                        return@forEach
+                    }
+                }
+
+                offer(FbResponse.Success(responseData))
+            }
+            .addOnFailureListener {
+                offer(FbResponse.Fail(it))
+            }
+
+        awaitClose { this.cancel() }
+    }
+
+    suspend fun createRoom(roomRequest: RoomRequest) = callbackFlow {
+        roomCollection.add(roomRequest)
+            .addOnSuccessListener {
+                offer(FbResponse.Success(it.id))
+            }
+            .addOnFailureListener { FbResponse.Fail(it) }
+
+        awaitClose { this.cancel() }
     }
 
 
@@ -184,14 +200,13 @@ class StoreRepository @Inject constructor(
 
         awaitClose { this.cancel("StoreRepository-sendMsg() : cancel") }
 
-
     }
 
 
     suspend fun chatSnapshot(rId: String): Flow<FbResponse<List<MsgResponse>?>> = callbackFlow {
         val query = roomCollection.document(rId).collection("messages")
 
-        val snap = query.addSnapshotListener { snapshots, error ->
+        val registration = query.addSnapshotListener { snapshots, error ->
             if(error != null){
                 Log.e("//repository", "listen: error ",error)
                 offer(FbResponse.Fail(error))
@@ -203,7 +218,7 @@ class StoreRepository @Inject constructor(
 
         }
 
-        awaitClose { snap.remove() }
+        awaitClose { registration.remove() }
     }
 
 

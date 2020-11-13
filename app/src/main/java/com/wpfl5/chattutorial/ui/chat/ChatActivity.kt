@@ -39,7 +39,7 @@ class ChatActivity : BaseVMActivity<ActivityChatBinding, ChatViewModel>() {
             btnSend.setOnClickListener {
                 val msg = inputText.getString()
                 val sentId = getSpValue("userId","")
-                val receiveId = args.room.users?.filter { it!=sentId }!![0]
+                val receiveId = args.room.users.filter { it!=sentId }[0]
                 val msgRequest = MsgRequest(msg, receiveId, sentId)
                 viewModel.sendMsg(msgRequest)
                 inputText.text.clear()

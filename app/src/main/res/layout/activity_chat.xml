@@ -27,7 +27,6 @@
             app:contentInsetStartWithNavigation="0dp"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             tools:subtitle="Traveling today. BBM me."
-            app:subtitle="@{room.name}"
             app:subtitleTextAppearance="@style/TextAppearance.AppCompat.Small"
             app:subtitleTextColor="#cccccc"
             app:roomText="@{room.users}"
