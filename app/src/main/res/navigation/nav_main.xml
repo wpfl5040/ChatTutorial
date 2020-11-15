@@ -32,8 +32,8 @@
         android:label="MainRoomsFragment"
         tools:layout="@layout/fragment_main_rooms">
         <action
-            android:id="@+id/action_roomsFragment_to_chattingFragment"
-            app:destination="@id/chattingFragment" />
+            android:id="@+id/action_roomsFragment_to_chatActivity"
+            app:destination="@id/chatActivity" />
     </fragment>
     <activity
         android:id="@+id/chatActivity"
@@ -41,8 +41,8 @@
         android:label="ChatActivity"
         tools:layout="@layout/activity_chat">
         <argument
-            android:name="room"
-            app:argType="com.wpfl5.chattutorial.model.response.RoomResponse" />
+            android:name="friendId"
+            app:argType="string" />
     </activity>
     <fragment
         android:id="@+id/myProfileFragment"
@@ -58,23 +58,9 @@
             android:name="user"
             app:argType="com.wpfl5.chattutorial.model.response.UserResponse" />
         <action
-            android:id="@+id/action_friendProfileFragment_to_chattingFragment"
-            app:destination="@id/chattingFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out" />
+            android:id="@+id/action_friendProfileFragment_to_chatActivity"
+            app:destination="@id/chatActivity" />
     </fragment>
 
-
-    <fragment
-        android:id="@+id/chattingFragment"
-        android:name="com.wpfl5.chattutorial.ui.main.chatting.ChattingFragment"
-        android:label="ChattingFragment"
-        tools:layout="@layout/fragment_chatting" >
-        <argument
-            android:name="friendId"
-            app:argType="string" />
-    </fragment>
 
 </navigation>

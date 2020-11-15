@@ -12,6 +12,7 @@ import com.wpfl5.chattutorial.BR
 import com.wpfl5.chattutorial.R
 import com.wpfl5.chattutorial.databinding.RowChatFriendBinding
 import com.wpfl5.chattutorial.databinding.RowChatMeBinding
+import com.wpfl5.chattutorial.databinding.RowDatetimeBinding
 import com.wpfl5.chattutorial.ext.getSpValue
 import com.wpfl5.chattutorial.model.response.MsgResponse
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -58,6 +59,14 @@ class ChatAdapter @Inject constructor(
                     false
                 )
             )
+            R.layout.row_datetime -> ChatViewHolder<RowDatetimeBinding>(
+                DataBindingUtil.inflate(
+                    LayoutInflater.from(parent.context),
+                    R.layout.row_datetime,
+                    parent,
+                    false
+                )
+            )
             else -> throw IllegalArgumentException("unknown view type $viewType")
         }
 
@@ -66,6 +75,7 @@ class ChatAdapter @Inject constructor(
     override fun getItemViewType(position: Int): Int {
         val item = getItem(position)
         val myId = context.getSpValue("userId", "")
+
         return if(item.sentBy == myId) R.layout.row_chat_me
                 else R.layout.row_chat_friend
     }

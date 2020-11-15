@@ -27,7 +27,7 @@ class FriendProfileFragment : BaseVMFragment<FragmentFriendProfileBinding, MainV
         binding.apply {
             mainViewModel = viewModel
             this.friend = friend
-            btnChat.setOnClickListener { findNavController().navigate(FriendProfileFragmentDirections.actionFriendProfileFragmentToChattingFragment(friend.id)) }
+            btnChat.setOnClickListener { findNavController().navigate(FriendProfileFragmentDirections.actionFriendProfileFragmentToChatActivity(friend.id)) }
             btnPhone.setOnClickListener { startActivity(Intent(ACTION_VIEW, Uri.parse("tel:"))) }
             btnZoom.setOnClickListener {  }
 

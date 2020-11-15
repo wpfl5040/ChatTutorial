@@ -5,56 +5,85 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
+import com.google.firebase.auth.FirebaseAuth
 import com.wpfl5.chattutorial.model.request.MsgRequest
+import com.wpfl5.chattutorial.model.request.RoomRequest
 import com.wpfl5.chattutorial.model.response.FbResponse
 import com.wpfl5.chattutorial.model.response.MsgResponse
-import com.wpfl5.chattutorial.model.response.RoomResponse
 import com.wpfl5.chattutorial.repository.StoreRepository
 import com.wpfl5.chattutorial.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 
 class ChatViewModel @ViewModelInject constructor(
-    val repository: StoreRepository
+    val storeRepository: StoreRepository,
+    private val auth: FirebaseAuth
 ) : BaseViewModel() {
 
-    val chatSnapshot : LiveData<FbResponse<List<MsgResponse>?>>
+    private val _rId: MutableLiveData<String> = MutableLiveData()
+    val rId: LiveData<String> get() = _rId
 
-    private val _roomData = MutableLiveData<RoomResponse>()
+
+    fun getRoomData(friendId: String) = liveData(coroutineIoContext) {
+        storeRepository.getRoomData(
+            myId = auth.currentUser!!.email!!,
+            friendId = friendId
+        )
+            .onStart { emit(FbResponse.Loading) }
+            .collect { emit(it) }
+    }
+
+    val chatSnapshot : LiveData<FbResponse<List<MsgResponse>?>> = rId.switchMap {
+        liveData(coroutineIoContext) {
+            try {
+                storeRepository.chatSnapshot(it)
+                    .onStart { emit(FbResponse.Loading) }
+                    .collect { emit(it) }
+            } catch (e: Exception) {
+                emit(FbResponse.Fail(e))
+            }
+        }
+    }
+
 
     private val _sendChatData = MutableLiveData<MsgRequest>()
     val sendChatDataResponse : LiveData<FbResponse<Boolean>> = _sendChatData.switchMap {
         liveData(coroutineIoContext) {
-            emit(FbResponse.Loading)
             try {
-                repository.sendMsg(_roomData.value!!.rid, it).collect { emit(it) }
+                storeRepository.sendMsg(rId.value!!, it)
+                    .onStart { emit(FbResponse.Loading) }
+                    .collect { emit(it) }
             } catch (e: Exception) {
                 emit(FbResponse.Fail(e))
             }
         }
     }
 
-    init {
-        chatSnapshot = liveData(coroutineIoContext) {
-            emit(FbResponse.Loading)
-            try {
-                repository.chatSnapshot(_roomData.value!!.rid).collect {
-                    var result : FbResponse<List<MsgResponse>?> = it
-                    emit(it)
-                }
+    fun sendMsg(msg: String, friendId: String){
+        _sendChatData.value = MsgRequest(
+            msg = msg,
+            receiveBy = friendId,
+            sentBy = auth.currentUser!!.email!!
+        )
+    }
 
-            } catch (e: Exception) {
-                emit(FbResponse.Fail(e))
-            }
+    fun createRoom(friendId: String) = liveData(coroutineIoContext) {
+        val roomRequest = RoomRequest(
+            createdBy = auth.currentUser!!.email!!,
+            users = listOf(auth.currentUser!!.email!!, friendId)
+        )
+        try {
+            storeRepository.createRoom(roomRequest)
+                .onStart { emit(FbResponse.Loading) }
+                .collect { emit(it) }
+        }catch (e: Exception){
+            emit(FbResponse.Fail(e))
         }
+    }
 
+    fun setRoomId(rId: String) {
+        _rId.value = rId
     }
 
 
-    fun sendMsg(msgRequest: MsgRequest){
-        _sendChatData.value = msgRequest
-    }
-
-    fun setRoomData(room: RoomResponse){
-        _roomData.value = room
-    }
 }

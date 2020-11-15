@@ -19,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           MainRoomsFragment : BaseVMFragment<FragmentMainRoomsBinding, RoomsViewModel>() {
+class MainRoomsFragment : BaseVMFragment<FragmentMainRoomsBinding, RoomsViewModel>() {
     override fun getLayoutRes(): Int = R.layout.fragment_main_rooms
     override val viewModel: RoomsViewModel by viewModels()
     private val mainVM: MainViewModel by activityViewModels()
@@ -28,7 +28,7 @@ class                                                                           
     private var adapter: RoomAdapter = RoomAdapter { room ->
         val friendId = room.users.filterNot { it == auth.currentUser!!.email }.first()
         findNavController()
-            .navigate(MainRoomsFragmentDirections.actionRoomsFragmentToChattingFragment(friendId))
+            .navigate(MainRoomsFragmentDirections.actionRoomsFragmentToChatActivity(friendId))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
