@@ -16,6 +16,8 @@ import com.wpfl5.chattutorial.databinding.RowDatetimeBinding
 import com.wpfl5.chattutorial.ext.getSpValue
 import com.wpfl5.chattutorial.model.response.MsgResponse
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,6 +25,7 @@ import javax.inject.Singleton
 class ChatAdapter @Inject constructor(
     @ApplicationContext val context: Context
 ) : ListAdapter<MsgResponse, RecyclerView.ViewHolder>(DiffObj) {
+    lateinit var tempDate: String
 
     companion object DiffObj: DiffUtil.ItemCallback<MsgResponse>(){
             override fun areContentsTheSame(oldItem: MsgResponse, newItem: MsgResponse): Boolean {
@@ -59,7 +62,7 @@ class ChatAdapter @Inject constructor(
                     false
                 )
             )
-            R.layout.row_datetime -> ChatViewHolder<RowDatetimeBinding>(
+            R.layout.row_datetime -> DateViewHolder<RowDatetimeBinding>(
                 DataBindingUtil.inflate(
                     LayoutInflater.from(parent.context),
                     R.layout.row_datetime,
@@ -76,9 +79,21 @@ class ChatAdapter @Inject constructor(
         val item = getItem(position)
         val myId = context.getSpValue("userId", "")
 
+        val dateTime = item.sentAt!!
+        val mill = dateTime.seconds * 1000 + dateTime.nanoseconds / 1000000
+        val sdf = SimpleDateFormat("yyyy/MM/dd", Locale.KOREA)
+        val netDate = Date(mill)
+        val date = sdf.format(netDate).toString()
+
+        if(date != tempDate) {
+            tempDate = date
+            return R.layout.row_datetime
+        }
+
         return if(item.sentBy == myId) R.layout.row_chat_me
                 else R.layout.row_chat_friend
     }
+
 
 
     class ChatViewHolder<T: ViewDataBinding> constructor(val binding: T) : RecyclerView.ViewHolder(binding.root) {
@@ -90,6 +105,15 @@ class ChatAdapter @Inject constructor(
             }
         }
 
+    }
+
+    class DateViewHolder<T: ViewDataBinding> constructor(val binding: T) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(dateTime: String) {
+            binding.apply {
+                setVariable(BR.timeStamp, dateTime)
+                executePendingBindings()
+            }
+        }
     }
 
 
