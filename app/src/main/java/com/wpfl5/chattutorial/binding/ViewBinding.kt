@@ -27,7 +27,7 @@ object ViewBinding{
     fun timestampToString(view: TextView, timestamp: Timestamp?){
         if(timestamp != null){
             val mill = timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000
-            val sdf = SimpleDateFormat("MM/dd HH:mm aaa", Locale.KOREA)
+            val sdf = SimpleDateFormat("yyyy년 MM월 dd일 E요일", Locale.KOREAN)
             val netDate = Date(mill)
             val date = sdf.format(netDate).toString()
             view.text = if(date.isEmpty()) "" else date

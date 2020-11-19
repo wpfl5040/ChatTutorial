@@ -8,4 +8,6 @@
     <color name="scrim">#B2000000</color>
 
     <color name="grey">#8E8E8E</color>
+
+    <color name="grey_datetime">#C6C6C6</color>
 </resources>

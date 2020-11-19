@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.ServerTimestamp
+import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -17,4 +18,7 @@ data class MsgResponse(
 ) : Parcelable {
     constructor() : this("","","","",null)
     constructor(msg: String, receiveBy: String, sentBy: String, sentAt: Timestamp?) : this("",msg,receiveBy,sentBy,sentAt)
+
+    @IgnoredOnParcel
+    var isDateTime: Boolean = false
 }
