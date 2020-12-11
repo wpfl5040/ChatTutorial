@@ -95,7 +95,7 @@ class ChatActivity : BaseVMActivity<ActivityChatBinding, ChatViewModel>() {
 
                 }
                 is FbResponse.Success -> {
-                    toast("success Sent")
+                    //toast("success Sent")
                 }
                 is FbResponse.Fail -> {
                     toast(result.e.message)

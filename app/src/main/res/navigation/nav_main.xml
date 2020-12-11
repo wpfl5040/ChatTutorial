@@ -33,7 +33,11 @@
         tools:layout="@layout/fragment_main_rooms">
         <action
             android:id="@+id/action_roomsFragment_to_chatActivity"
-            app:destination="@id/chatActivity" />
+            app:destination="@id/chatActivity"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"/>
     </fragment>
     <activity
         android:id="@+id/chatActivity"
@@ -59,7 +63,11 @@
             app:argType="com.wpfl5.chattutorial.model.response.UserResponse" />
         <action
             android:id="@+id/action_friendProfileFragment_to_chatActivity"
-            app:destination="@id/chatActivity" />
+            app:destination="@id/chatActivity"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"/>
     </fragment>
 
 
